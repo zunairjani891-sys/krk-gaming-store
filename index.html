@@ -3,91 +3,638 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>KRK Gaming Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080808">
+  <meta name="description" content="KRK Gaming Store - Discover games and gaming updates.">
+  <title>KRK Gaming Store | Level Up Your Game</title>
+
   <style>
+    :root {
+      --bg: #080808;
+      --panel: #121212;
+      --gold: #f5c542;
+      --gold2: #d9a91e;
+      --text: #f5f5f5;
+      --muted: #aaa;
+      --border: #302817;
+      --danger: #ff6565;
+    }
+
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0b0b0d;
-      color: #f5f5f5;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
     }
+    a { color: var(--gold); text-decoration: none; }
+    button, input, textarea { font: inherit; }
+    button, .button {
+      border: 0;
+      border-radius: 7px;
+      padding: 11px 16px;
+      background: var(--gold);
+      color: #111;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover, .button:hover { background: var(--gold2); }
+    button:disabled { opacity: .6; cursor: wait; }
+    .secondary {
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+    }
+    .danger {
+      background: #351616;
+      border: 1px solid #773333;
+      color: #fff;
+    }
+    .danger:hover { background: #542020; }
     header {
-      padding: 20px;
-      background: #151515;
-      border-bottom: 2px solid #d6aa45;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(8,8,8,.96);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav {
+      max-width: 1100px;
+      margin: auto;
+      padding: 15px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       gap: 12px;
     }
-    .logo { color: #e6bb55; font-weight: 900; font-size: 22px; }
-    nav a {
-      color: white; text-decoration: none; margin: 8px;
-    }
+    .logo { color: var(--gold); font-size: 22px; font-weight: 900; }
+    nav { display: flex; gap: 18px; flex-wrap: wrap; }
+    nav a { color: #eee; }
+    nav a:hover { color: var(--gold); }
     .hero {
       text-align: center;
-      padding: 70px 20px;
-      background: radial-gradient(ellipse at top, #453416, #101012 65%);
+      padding: 85px 20px;
+      background: radial-gradient(ellipse at top, #33270b 0%, #111 42%, #080808 75%);
+      border-bottom: 1px solid var(--border);
     }
-    h1 { color: #f0c75e; font-size: clamp(32px, 7vw, 54px); }
-    .btn {
-      display: inline-block;
-      background: #e5b747; color: #111;
-      padding: 13px 22px; border-radius: 8px;
-      font-weight: bold; text-decoration: none;
-      border: 0; cursor: pointer;
-    }
-    main { max-width: 1050px; margin: auto; padding: 25px 16px; }
-    .games {
+    .hero h1 { font-size: clamp(32px, 6vw, 58px); line-height: 1.15; margin: 0 0 16px; }
+    .gold { color: var(--gold); }
+    .hero p { color: #ccc; max-width: 650px; margin: 0 auto 24px; }
+    .wrap { max-width: 1100px; margin: auto; padding: 35px 20px; }
+    .section-title { color: var(--gold); margin-top: 0; }
+    .muted { color: var(--muted); }
+    .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: 18px;
     }
     .card {
-      background: #18181b; border: 1px solid #594721;
-      border-radius: 12px; padding: 18px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      padding: 17px;
+      min-width: 0;
     }
-    .card h3 { color: #e6bb55; }
-    .muted { color: #b9b9bd; line-height: 1.6; }
-    footer { text-align: center; padding: 24px; color: #aaa; }
+    .card img {
+      display: block;
+      width: 100%;
+      height: 165px;
+      object-fit: cover;
+      border-radius: 8px;
+      background: #202020;
+      margin-bottom: 12px;
+    }
+    .card h3 { color: var(--gold); margin: 5px 0; overflow-wrap: anywhere; }
+    .card p { color: #ccc; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .actions button, .actions a { font-size: 14px; }
+    .panel {
+      background: #101010;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+    .field { margin-bottom: 14px; }
+    .field label { display: block; color: var(--gold); margin-bottom: 5px; }
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      background: #080808;
+      border: 1px solid #4a4028;
+      border-radius: 7px;
+      color: white;
+    }
+    input:focus, textarea:focus { outline: 1px solid var(--gold); }
+    textarea { min-height: 90px; resize: vertical; }
+    .check-row { display: flex; align-items: center; gap: 10px; margin: 12px 0; }
+    .check-row input { width: auto; }
+    .notice { padding: 11px; background: #1b1b1b; border-radius: 7px; color: #ddd; }
+    .notice.error { color: #ff9b9b; border: 1px solid #713737; }
+    .notice.success { color: #b8f0bd; border: 1px solid #315b36; }
+    .hidden { display: none !important; }
+    footer {
+      text-align: center;
+      padding: 25px 15px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+    }
+    @media (max-width: 600px) {
+      .nav { justify-content: center; }
+      nav { justify-content: center; }
+      .hero { padding: 60px 16px; }
+    }
   </style>
 </head>
+
 <body>
   <header>
-    <div class="logo">KRK GAMING STORE</div>
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#games">Games</a>
-      <a href="#about">About</a>
-    </nav>
+    <div class="nav">
+      <a class="logo" href="#home">KRK GAMING STORE</a>
+      <nav aria-label="Main navigation">
+        <a href="#home">Home</a>
+        <a href="#games">Games</a>
+        <a href="#about">About</a>
+        <a href="#account">Account</a>
+        <a href="#admin" id="adminNav" class="hidden">Admin</a>
+      </nav>
+    </div>
   </header>
 
-  <section class="hero" id="home">
-    <p>YOUR NEXT GAMING DESTINATION</p>
-    <h1>LEVEL UP YOUR GAME</h1>
-    <p class="muted">Discover games. Explore new worlds. Play your way.</p>
-    <a class="btn" href="#games">EXPLORE GAMES</a>
-  </section>
-
   <main>
-    <h2 id="games">Featured Games</h2>
-    <p class="muted">Game listings will appear here.</p>
-    <div class="games" id="game-list">
-      <article class="card">
-        <h3>Coming Soon</h3>
-        <p class="muted">Your gaming collection starts here.</p>
-      </article>
-    </div>
+    <section class="hero" id="home">
+      <h1>LEVEL UP YOUR <span class="gold">GAME</span></h1>
+      <p>Discover games, explore new releases and find your next gaming adventure at KRK Gaming Store.</p>
+      <a class="button" href="#games">Explore Games</a>
+    </section>
 
-    <section id="about">
-      <h2>About KRK Gaming Store</h2>
-      <p class="muted">A gaming destination for discovering games and gaming news.</p>
+    <section class="wrap" id="games">
+      <h2 class="section-title">Featured Games</h2>
+      <p class="muted">Games published by the store admin appear here.</p>
+      <div id="gameStatus" class="notice" role="status">Loading games...</div>
+      <div id="game-list" class="grid" style="margin-top:18px"></div>
+    </section>
+
+    <section class="wrap" id="about">
+      <h2 class="section-title">About KRK Gaming Store</h2>
+      <p class="muted">Your gaming destination for discovering games and gaming content. Only download games from sources you trust and have permission to use.</p>
+    </section>
+
+    <section class="wrap" id="account">
+      <h2 class="section-title">Account Login</h2>
+      <div class="panel">
+        <p id="authStatus" class="notice" role="status">Checking account...</p>
+
+        <form id="loginForm">
+          <div class="field">
+            <label for="email">Email address</label>
+            <input id="email" type="email" autocomplete="username" required>
+          </div>
+          <div class="field">
+            <label for="password">Firebase account password</label>
+            <input id="password" type="password" autocomplete="current-password" required>
+          </div>
+          <button id="loginButton" type="submit">Login</button>
+        </form>
+
+        <button id="logoutButton" class="secondary hidden" type="button" style="margin-top:12px">Logout</button>
+      </div>
+    </section>
+
+    <section class="wrap hidden" id="admin">
+      <h2 class="section-title">Admin Dashboard</h2>
+      <p class="muted">Add games to the store or update existing game details.</p>
+
+      <div class="panel">
+        <h3 id="formTitle">Add New Game</h3>
+        <form id="gameForm">
+          <input type="hidden" id="editId">
+
+          <div class="field">
+            <label for="gameTitle">Game name *</label>
+            <input id="gameTitle" maxlength="100" required>
+          </div>
+
+          <div class="field">
+            <label for="gameDescription">Description *</label>
+            <textarea id="gameDescription" maxlength="2000" required></textarea>
+          </div>
+
+          <div class="field">
+            <label for="gameImage">Image URL (optional, must start with https://)</label>
+            <input id="gameImage" type="url" placeholder="https://example.com/image.jpg">
+          </div>
+
+          <div class="field">
+            <label for="gameDownload">Game page / download URL *</label>
+            <input id="gameDownload" type="url" placeholder="https://example.com/game" required>
+          </div>
+
+          <label class="check-row">
+            <input id="gamePublished" type="checkbox" checked>
+            Publish this game on the homepage
+          </label>
+
+          <button id="saveGameButton" type="submit">Save Game</button>
+          <button id="cancelEditButton" class="secondary hidden" type="button">Cancel Edit</button>
+        </form>
+        <p id="adminMessage" class="notice" role="status" style="margin-top:14px">Admin tools ready when your account is verified.</p>
+      </div>
+
+      <div class="panel">
+        <h3>Manage Games</h3>
+        <p class="muted">Draft games are visible only to authorized admins.</p>
+        <div id="adminGameStatus" class="notice" role="status">Waiting for admin access...</div>
+        <div id="admin-game-list" class="grid" style="margin-top:18px"></div>
+      </div>
     </section>
   </main>
 
-  <footer>© 2026 KRK Gaming Store</footer>
+  <footer>
+    <p>© <span id="year"></span> KRK Gaming Store. All rights reserved.</p>
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+    import {
+      getFirestore,
+      collection,
+      query,
+      where,
+      getDocs,
+      addDoc,
+      updateDoc,
+      deleteDoc,
+      doc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAUiRePiSDzXC50hUEad3eZ6NprPS364YE",
+      authDomain: "krk-gaming-store.firebaseapp.com",
+      projectId: "krk-gaming-store",
+      storageBucket: "krk-gaming-store.firebasestorage.app",
+      messagingSenderId: "906609596294",
+      appId: "1:906609596294:web:51f5dab4aaeb33ea7fbe07",
+      measurementId: "G-KZ8G7GKPJ4"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const $ = (id) => document.getElementById(id);
+    let currentUser = null;
+    let isAdmin = false;
+    let busy = false;
+
+    $("year").textContent = new Date().getFullYear();
+
+    function setMessage(id, message, type = "") {
+      const el = $(id);
+      el.textContent = message;
+      el.className = "notice" + (type ? " " + type : "");
+    }
+
+    function safeWebUrl(value, optional = false) {
+      const text = String(value || "").trim();
+      if (!text && optional) return "";
+      try {
+        const url = new URL(text);
+        if (url.protocol === "https:" || url.protocol === "http:") {
+          return url.href;
+        }
+      } catch (_) {}
+      throw new Error("Please enter a valid http:// or https:// URL.");
+    }
+
+    function makeElement(tag, className, text) {
+      const el = document.createElement(tag);
+      if (className) el.className = className;
+      if (text !== undefined) el.textContent = text;
+      return el;
+    }
+
+    function makeGameCard(id, game, adminMode = false) {
+      const card = makeElement("article", "card");
+      const imageUrl = game.imageUrl ? safeWebUrl(game.imageUrl, true) : "";
+
+      if (imageUrl) {
+        const image = makeElement("img");
+        image.src = imageUrl;
+        image.alt = game.title || "Game cover";
+        image.loading = "lazy";
+        image.referrerPolicy = "no-referrer";
+        image.addEventListener("error", () => image.remove());
+        card.appendChild(image);
+      }
+
+      card.appendChild(makeElement("h3", "", game.title || "Untitled game"));
+      card.appendChild(makeElement("p", "", game.description || ""));
+
+      if (adminMode) {
+        card.appendChild(makeElement(
+          "p", "muted",
+          game.published ? "Status: Published" : "Status: Draft (not public)"
+        ));
+      } else if (game.published) {
+        const link = makeElement("a", "button", "View / Download");
+        link.href = safeWebUrl(game.downloadUrl);
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        card.appendChild(makeElement("div", "actions")).appendChild(link);
+      }
+
+      if (adminMode) {
+        const actions = makeElement("div", "actions");
+        const editButton = makeElement("button", "secondary", "Edit");
+        editButton.type = "button";
+        editButton.addEventListener("click", () => beginEdit(id, game));
+
+        const deleteButton = makeElement("button", "danger", "Delete");
+        deleteButton.type = "button";
+        deleteButton.addEventListener("click", () => removeGame(id, game.title));
+
+        actions.append(editButton, deleteButton);
+        card.appendChild(actions);
+      }
+
+      return card;
+    }
+
+    async function loadPublicGames() {
+      const container = $("game-list");
+      container.replaceChildren();
+      setMessage("gameStatus", "Loading games...");
+
+      try {
+        // Public visitors must query only published documents.
+        const publicQuery = query(
+          collection(db, "games"),
+          where("published", "==", true)
+        );
+        const snapshot = await getDocs(publicQuery);
+
+        if (snapshot.empty) {
+          setMessage("gameStatus", "Abhi koi game publish nahi hui. Baad mein dobara check karein.");
+          return;
+        }
+
+        snapshot.forEach((item) => {
+          try {
+            container.appendChild(makeGameCard(item.id, item.data()));
+          } catch (error) {
+            console.error("Skipped invalid game record:", error);
+          }
+        });
+
+        setMessage(
+          "gameStatus",
+          container.children.length
+            ? "Games loaded successfully."
+            : "No displayable games found."
+        );
+      } catch (error) {
+        console.error(error);
+        setMessage(
+          "gameStatus",
+          "Games load nahi huay. Firebase Firestore Rules aur project connection check karein.",
+          "error"
+        );
+      }
+    }
+
+    async function loadAdminGames() {
+      const container = $("admin-game-list");
+      container.replaceChildren();
+
+      if (!currentUser || !isAdmin) {
+        setMessage("adminGameStatus", "Admin account se login karein.");
+        return;
+      }
+
+      setMessage("adminGameStatus", "Loading admin games...");
+
+      try {
+        const snapshot = await getDocs(collection(db, "games"));
+
+        if (snapshot.empty) {
+          setMessage("adminGameStatus", "Abhi games collection mein koi game nahi. Upar form se pehli game add karein.");
+          return;
+        }
+
+        snapshot.forEach((item) => {
+          try {
+            container.appendChild(makeGameCard(item.id, item.data(), true));
+          } catch (error) {
+            console.error("Skipped invalid admin game:", error);
+          }
+        });
+
+        setMessage("adminGameStatus", "Games loaded: " + snapshot.size);
+      } catch (error) {
+        console.error(error);
+        setMessage(
+          "adminGameStatus",
+          "Admin games load nahi huay. Admin claim refresh aur Firestore Rules check karein.",
+          "error"
+        );
+      }
+    }
+
+    function setBusy(value) {
+      busy = value;
+      $("loginButton").disabled = value;
+      $("saveGameButton").disabled = value;
+    }
+
+    $("loginForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (busy) return;
+
+      setBusy(true);
+      try {
+        await signInWithEmailAndPassword(
+          auth,
+          $("email").value.trim(),
+          $("password").value
+        );
+        $("password").value = "";
+        setMessage("authStatus", "Login successful. Account permissions check ho rahi hain.");
+      } catch (error) {
+        console.error(error);
+        setMessage(
+          "authStatus",
+          "Login nahi hua. Email/password aur Firebase Authentication ka Email/Password option check karein.",
+          "error"
+        );
+      } finally {
+        setBusy(false);
+      }
+    });
+
+    $("logoutButton").addEventListener("click", async () => {
+      try {
+        await signOut(auth);
+        setMessage("authStatus", "Logout successful.");
+      } catch (error) {
+        console.error(error);
+        setMessage("authStatus", "Logout nahi hua. Dobara try karein.", "error");
+      }
+    });
+
+    onAuthStateChanged(auth, async (user) => {
+      currentUser = user;
+      isAdmin = false;
+
+      $("loginForm").classList.toggle("hidden", !!user);
+      $("logoutButton").classList.toggle("hidden", !user);
+      $("admin").classList.add("hidden");
+      $("adminNav").classList.add("hidden");
+      $("admin-game-list").replaceChildren();
+      setMessage("adminGameStatus", "Waiting for admin access...");
+
+      if (!user) {
+        setMessage("authStatus", "Aap login nahi hain. Public games dekh sakte hain.");
+        await loadPublicGames();
+        return;
+      }
+
+      try {
+        const token = await user.getIdTokenResult(true);
+        isAdmin = token.claims.admin === true;
+
+        if (isAdmin) {
+          $("admin").classList.remove("hidden");
+          $("adminNav").classList.remove("hidden");
+          setMessage("authStatus", "Admin login successful: " + user.email, "success");
+          await loadAdminGames();
+        } else {
+          setMessage(
+            "authStatus",
+            "Login successful, lekin is account ko admin permission nahi mili."
+          );
+        }
+      } catch (error) {
+        console.error(error);
+        setMessage("authStatus", "Account permissions verify nahi ho sakin. Dobara login karein.", "error");
+      }
+
+      await loadPublicGames();
+    });
+
+    function beginEdit(id, game) {
+      if (!isAdmin) return;
+
+      $("editId").value = id;
+      $("gameTitle").value = game.title || "";
+      $("gameDescription").value = game.description || "";
+      $("gameImage").value = game.imageUrl || "";
+      $("gameDownload").value = game.downloadUrl || "";
+      $("gamePublished").checked = game.published === true;
+      $("formTitle").textContent = "Edit Game";
+      $("saveGameButton").textContent = "Update Game";
+      $("cancelEditButton").classList.remove("hidden");
+      $("gameForm").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function resetGameForm() {
+      $("gameForm").reset();
+      $("editId").value = "";
+      $("gamePublished").checked = true;
+      $("formTitle").textContent = "Add New Game";
+      $("saveGameButton").textContent = "Save Game";
+      $("cancelEditButton").classList.add("hidden");
+    }
+
+    $("cancelEditButton").addEventListener("click", () => {
+      resetGameForm();
+      setMessage("adminMessage", "Edit cancelled.");
+    });
+
+    $("gameForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (!currentUser || !isAdmin) {
+        setMessage("adminMessage", "Sirf verified admin game save kar sakta hai.", "error");
+        return;
+      }
+      if (busy) return;
+
+      try {
+        const title = $("gameTitle").value.trim();
+        const description = $("gameDescription").value.trim();
+        const imageUrl = safeWebUrl($("gameImage").value, true);
+        const downloadUrl = safeWebUrl($("gameDownload").value);
+
+        if (!title || !description) {
+          throw new Error("Game name aur description fill karein.");
+        }
+
+        const id = $("editId").value;
+        const data = {
+          title,
+          description,
+          imageUrl,
+          downloadUrl,
+          published: $("gamePublished").checked,
+          updatedAt: serverTimestamp()
+        };
+
+        setBusy(true);
+        if (id) {
+          await updateDoc(doc(db, "games", id), data);
+          setMessage("adminMessage", "Game update ho gayi.", "success");
+        } else {
+          data.createdAt = serverTimestamp();
+          await addDoc(collection(db, "games"), data);
+          setMessage("adminMessage", "Game add ho gayi.", "success");
+        }
+
+        resetGameForm();
+        await loadAdminGames();
+        await loadPublicGames();
+      } catch (error) {
+        console.error(error);
+        setMessage(
+          "adminMessage",
+          error.message || "Game save nahi hui. Firestore Rules aur admin permission check karein.",
+          "error"
+        );
+      } finally {
+        setBusy(false);
+      }
+    });
+
+    async function removeGame(id, title) {
+      if (!currentUser || !isAdmin) return;
+      if (!confirm('"' + (title || "This game") + '" delete karni hai?')) return;
+
+      try {
+        await deleteDoc(doc(db, "games", id));
+        setMessage("adminMessage", "Game delete ho gayi.", "success");
+        await loadAdminGames();
+        await loadPublicGames();
+      } catch (error) {
+        console.error(error);
+        setMessage("adminMessage", "Delete nahi hui. Firestore Rules aur admin claim check karein.", "error");
+      }
+    }
+
+    // Catch unexpected startup errors and show a useful status.
+    window.addEventListener("error", (event) => {
+      console.error("Page error:", event.error || event.message);
+    });
+  </script>
 </body>
 </html>
