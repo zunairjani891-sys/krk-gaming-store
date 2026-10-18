@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KRK Gaming Store</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b0b0d;
+      color: #f5f5f5;
+    }
+    header {
+      padding: 20px;
+      background: #151515;
+      border-bottom: 2px solid #d6aa45;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .logo { color: #e6bb55; font-weight: 900; font-size: 22px; }
+    nav a {
+      color: white; text-decoration: none; margin: 8px;
+    }
+    .hero {
+      text-align: center;
+      padding: 70px 20px;
+      background: radial-gradient(ellipse at top, #453416, #101012 65%);
+    }
+    h1 { color: #f0c75e; font-size: clamp(32px, 7vw, 54px); }
+    .btn {
+      display: inline-block;
+      background: #e5b747; color: #111;
+      padding: 13px 22px; border-radius: 8px;
+      font-weight: bold; text-decoration: none;
+      border: 0; cursor: pointer;
+    }
+    main { max-width: 1050px; margin: auto; padding: 25px 16px; }
+    .games {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+    }
+    .card {
+      background: #18181b; border: 1px solid #594721;
+      border-radius: 12px; padding: 18px;
+    }
+    .card h3 { color: #e6bb55; }
+    .muted { color: #b9b9bd; line-height: 1.6; }
+    footer { text-align: center; padding: 24px; color: #aaa; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">KRK GAMING STORE</div>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#games">Games</a>
+      <a href="#about">About</a>
+    </nav>
+  </header>
+
+  <section class="hero" id="home">
+    <p>YOUR NEXT GAMING DESTINATION</p>
+    <h1>LEVEL UP YOUR GAME</h1>
+    <p class="muted">Discover games. Explore new worlds. Play your way.</p>
+    <a class="btn" href="#games">EXPLORE GAMES</a>
+  </section>
+
+  <main>
+    <h2 id="games">Featured Games</h2>
+    <p class="muted">Game listings will appear here.</p>
+    <div class="games" id="game-list">
+      <article class="card">
+        <h3>Coming Soon</h3>
+        <p class="muted">Your gaming collection starts here.</p>
+      </article>
+    </div>
+
+    <section id="about">
+      <h2>About KRK Gaming Store</h2>
+      <p class="muted">A gaming destination for discovering games and gaming news.</p>
+    </section>
+  </main>
+
+  <footer>© 2026 KRK Gaming Store</footer>
+</body>
+</html>
