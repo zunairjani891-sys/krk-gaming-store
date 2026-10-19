@@ -4,183 +4,135 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0b0b0d">
-<title>KRK Game Zone | Admin Dashboard</title>
+<title>KRK ARENA Gaming Store</title>
 <style>
-:root{--bg:#0b0b0d;--panel:#151517;--gold:#e8bd59;--muted:#a5a5ad;--line:#332b1c;--red:#ff6969}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:#fff;font:15px Arial,sans-serif}
-button,input,textarea{font:inherit}
-button{cursor:pointer}
-.hidden{display:none!important}
-.gold{color:var(--gold)}
-.muted{color:var(--muted)}
-input,textarea{width:100%;padding:12px;margin:7px 0 15px;background:#0b0b0d;color:white;border:1px solid #413722;border-radius:8px}
-textarea{min-height:90px;resize:vertical}
-label{font-size:14px;color:#ddd}
-.btn{padding:11px 15px;border:0;border-radius:8px;background:var(--gold);color:#17120a;font-weight:bold}
-.secondary{background:#29292c;color:white;border:1px solid #444}
-.danger{background:#512126;color:white}
-.full{width:100%}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:19px;margin-bottom:18px}
-#loginScreen{min-height:100vh;display:grid;place-items:center;padding:20px}
-.login{width:100%;max-width:400px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:26px}
-.error{color:#ff8c8c;white-space:pre-wrap}
-.success{color:#9be3ad}
-.layout{min-height:100vh;display:grid;grid-template-columns:240px minmax(0,1fr)}
-aside{padding:20px 14px;background:#101012;border-right:1px solid var(--line)}
-.brand{padding:8px 10px 24px;color:var(--gold);font-weight:900;line-height:1.7}
-.nav{display:block;width:100%;text-align:left;padding:13px;margin:4px 0;border:0;border-radius:8px;background:transparent;color:#ddd}
-.nav.active,.nav:hover{background:#302719;color:var(--gold)}
-main{padding:25px;min-width:0}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:24px}
-h1{font-size:25px;margin:0}h2{font-size:19px}
-.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:18px}
-.stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
-.stat strong{display:block;font-size:29px;margin-top:12px;color:var(--gold)}
-.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
-.wide{grid-column:1/-1}
-.tablewrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:540px}
-th,td{text-align:left;padding:12px 9px;border-bottom:1px solid #332b1c}
-th{color:var(--gold)}
-.actions{display:flex;gap:6px;flex-wrap:wrap}
-.pill{color:var(--gold);font-size:12px}
-@media(max-width:760px){
-.layout{grid-template-columns:1fr}
-aside{border-right:0;border-bottom:1px solid var(--line);padding:12px}
-.brand{padding:5px 8px 10px}
-.navlist{display:flex;overflow-x:auto;gap:5px}
-.nav{width:auto;white-space:nowrap}
-main{padding:14px}
-.stats{grid-template-columns:1fr}
-.formgrid{grid-template-columns:1fr}
-.wide{grid-column:auto}
-}
+body{margin:0;background:#080d16;color:#eef6ff;font-family:Arial,sans-serif}
+header{background:#101a29;padding:20px;border-bottom:2px solid #00e5ff}
+h1{margin:0;color:#00e5ff}
+main{max-width:950px;margin:auto;padding:15px}
+.card{background:#101a29;border:1px solid #26394e;border-radius:12px;padding:17px;margin-bottom:16px}
+input,select,textarea{width:100%;padding:11px;margin:7px 0 13px;background:#080d16;color:white;border:1px solid #30465d;border-radius:7px}
+button{padding:10px 14px;margin:4px 2px;border:0;border-radius:7px;background:#00e5ff;color:#06111a;font-weight:bold;cursor:pointer}
+.del{background:#ff6174}.secondary{background:#26394e;color:white}
+.item{padding:12px;margin:10px 0;border:1px solid #30465d;border-radius:8px;overflow-wrap:anywhere}
+.small{color:#9aacc0;font-size:13px}.hidden{display:none}
+a{color:#00e5ff;overflow-wrap:anywhere}
 </style>
 </head>
 <body>
-
-<section id="loginScreen">
-<form id="loginForm" class="login">
-<h1 class="gold">🎮 KRK GAME ZONE</h1>
-<p class="muted">Secure Admin Login</p>
-<label for="email">Admin Email</label>
-<input id="email" type="email" autocomplete="username" required>
-<label for="password">Password</label>
-<input id="password" type="password" autocomplete="current-password" required>
-<button class="btn full" type="submit">Login to Dashboard</button>
-<p id="loginMessage" class="error" role="status"></p>
-</form>
-</section>
-
-<div id="adminApp" class="layout hidden">
-<aside>
-<div class="brand">🎮 KRK<br>GAME ZONE</div>
-<nav class="navlist">
-<button class="nav active" data-page="overview">▦ Overview</button>
-<button class="nav" data-page="games">🎮 Game Library</button>
-<button class="nav" data-page="editor">＋ Add New Game</button>
-<button class="nav" data-page="categories">◇ Categories</button>
-<button class="nav" data-page="analytics">▥ Statistics</button>
-<button class="nav" data-page="users">♙ User Management</button>
-</nav>
-<button id="logout" class="btn secondary full" style="margin-top:18px">Logout</button>
-</aside>
-
-<main>
-<header class="topbar">
-<div><h1 id="pageTitle">Overview</h1><p class="muted">Black & Gold Premium Admin Panel</p></div>
-<span id="status" class="pill">Connecting...</span>
+<header>
+<h1>KRK ARENA</h1>
+<p>Premium Gaming Store</p>
 </header>
+<main>
 
-<section id="page-overview" class="page">
-<div class="stats">
-<div class="stat">Total Games<strong id="total">0</strong></div>
-<div class="stat">Published<strong id="published">0</strong></div>
-<div class="stat">Drafts<strong id="drafts">0</strong></div>
-</div>
+<section class="card" id="login">
+<h2>Login / Create Account</h2>
+<label>Email</label><input id="email" type="email" autocomplete="email">
+<label>Password</label><input id="password" type="password" autocomplete="current-password">
+<button id="loginBtn">Login</button>
+<button id="signupBtn" class="secondary">Create Account</button>
+<p id="loginMsg" class="small"></p>
+</section>
+
+<section id="customer" class="hidden">
 <div class="card">
-<h2>Welcome to <span class="gold">KRK Game Zone</span></h2>
-<p class="muted">Games manage karo aur published games ko apne public store ke saath connect karo.</p>
-<button class="btn" data-goto="editor">＋ Add New Game</button>
+<h2>Customer Store</h2>
+<p id="customerInfo" class="small"></p>
+<button id="customerLogout" class="secondary">Logout</button>
 </div>
-</section>
 
-<section id="page-games" class="page hidden">
 <div class="card">
-<h2>Game Library</h2>
-<input id="search" placeholder="Search games or categories...">
-<div class="tablewrap"><table>
-<thead><tr><th>Game</th><th>Category</th><th>Status</th><th>Actions</th></tr></thead>
-<tbody id="gameRows"></tbody>
-</table></div>
-<p id="gamesMessage" class="muted"></p>
+<h2>Available Games</h2>
+<div id="storeGames"></div>
 </div>
-</section>
 
-<section id="page-editor" class="page hidden">
-<form id="gameForm" class="card">
-<h2 id="formHeading">Add New Game</h2>
-<input type="hidden" id="gameId">
-<div class="formgrid">
-<div><label for="title">Game Name *</label><input id="title" maxlength="100" required></div>
-<div><label for="category">Category *</label><input id="category" list="categoryOptions" required>
-<datalist id="categoryOptions">
-<option value="Action"><option value="Racing"><option value="Adventure">
-<option value="Sports"><option value="Simulation"><option value="Strategy"><option value="Other">
-</datalist></div>
-<div class="wide"><label for="description">Description</label><textarea id="description" maxlength="2000"></textarea></div>
-<div class="wide"><label for="imageUrl">Game Image URL (optional)</label><input id="imageUrl" type="url" placeholder="https://example.com/image.jpg"></div>
-<div class="wide"><label for="downloadUrl">Download URL *</label><input id="downloadUrl" type="url" required placeholder="https://example.com/game.apk"></div>
-</div>
-<label><input id="isPublished" type="checkbox" style="width:auto;margin-right:7px">Publish on public store</label>
-<p><button class="btn" type="submit">Save Game</button>
-<button class="btn secondary hidden" id="cancelEdit" type="button">Cancel Edit</button></p>
-<p id="formMessage" role="status"></p>
-</form>
-</section>
-
-<section id="page-categories" class="page hidden">
-<div class="card"><h2>Game Categories</h2><div id="categoryList"></div></div>
-</section>
-
-<section id="page-analytics" class="page hidden">
 <div class="card">
-<h2>Statistics & Analytics</h2>
-<p>Total games: <strong id="aTotal">0</strong></p>
-<p>Published games: <strong id="aPublished">0</strong></p>
-<p>Categories: <strong id="aCategories">0</strong></p>
-<hr style="border-color:#332b1c">
-<p class="muted">Yeh game catalog ki statistics hain. Real download-click reports ke liye Google Analytics ya secure event backend connect karna hoga.</p>
+<h2>Available Payment Methods</h2>
+<div id="storeMethods"></div>
+</div>
+
+<div class="card">
+<h2>Place Order</h2>
+<label>Game / Product</label>
+<select id="orderGame"></select>
+<label>Payment Method</label>
+<select id="orderMethod"></select>
+<label>Payment Reference / Transaction ID</label>
+<input id="paymentReference" placeholder="Enter transaction reference">
+<p class="small">Payment details apne payment provider ke official app mein verify karein. Password ya PIN kabhi share na karein.</p>
+<button id="submitOrder">Submit Order</button>
+<p id="orderMsg" class="small"></p>
+</div>
+
+<div class="card">
+<h2>My Orders & Downloads</h2>
+<div id="myOrders"></div>
 </div>
 </section>
 
-<section id="page-users" class="page hidden">
-<div class="card">
-<h2>User Management</h2>
-<p class="muted">Firebase Authentication users ki list aur account actions ke liye protected backend/Admin SDK zaroori hai. Browser dashboard se users ko delete ya admin promote nahi kiya jayega.</p>
-</div>
+<div id="dashboard" class="hidden">
+<section class="card">
+<h2>Admin Control Panel</h2>
+<p id="status" class="small"></p>
+<button id="logoutBtn" class="secondary">Logout</button>
 </section>
+
+<section class="card">
+<h2>Add / Edit Game</h2>
+<input id="gameId" type="hidden">
+<label>Game / Product Name</label><input id="gameName">
+<label>Category</label><input id="category" placeholder="Android / PC / Tool">
+<label>Price PKR</label><input id="pkr" type="number" min="0" value="0">
+<label>Price INR</label><input id="inr" type="number" min="0" value="0">
+<label>Image URL</label><input id="imageUrl" type="url" placeholder="https://...">
+<label>Download URL</label><input id="downloadUrl" type="url" placeholder="https://...">
+<label>Description</label><textarea id="description"></textarea>
+<label>Homepage Status</label>
+<select id="published"><option value="false">Draft</option><option value="true">Published</option></select>
+<button id="saveGame">Save Game</button>
+<button id="clearGame" class="secondary">Clear</button>
+<p id="gameMsg" class="small"></p>
+</section>
+
+<section class="card">
+<h2>Games & Products</h2><div id="gamesList"></div>
+</section>
+
+<section class="card">
+<h2>Payment Settings</h2>
+<input id="methodId" type="hidden">
+<label>Payment Method</label><input id="methodName" placeholder="Easypaisa / JazzCash / UPI">
+<label>Country</label>
+<select id="country"><option>Pakistan</option><option>India</option><option>Other</option></select>
+<label>Account Holder</label><input id="holder">
+<label>Account / Wallet / UPI ID</label><input id="account">
+<label>Customer Instructions</label><textarea id="instructions"></textarea>
+<label>Status</label>
+<select id="enabled"><option value="true">Enabled</option><option value="false">Disabled</option></select>
+<button id="saveMethod">Save Payment Method</button>
+<button id="clearMethod" class="secondary">Clear</button>
+<p id="methodMsg" class="small"></p>
+</section>
+
+<section class="card">
+<h2>Saved Payment Methods</h2><div id="methodsList"></div>
+</section>
+
+<section class="card">
+<h2>Orders & Manual Delivery</h2>
+<p class="small">Payment ko official account mein verify karne ke baad hi approve karein. Delivery ke liye valid HTTPS URL zaroori hai.</p>
+<div id="ordersList"></div>
+</section>
+</div>
 </main>
-</div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-import {
- getAuth, signInWithEmailAndPassword, onAuthStateChanged,
- signOut, getIdTokenResult
-} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-import {
- getFirestore, collection, getDocs, addDoc,
- doc, updateDoc, deleteDoc, serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
-
-/* PASTE YOUR FIREBASE CONFIG HERE.
-   Replace this entire object with the config from Firebase Console.
-   Keep exactly ONE const firebaseConfig declaration. */
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
 const firebaseConfig = {
- const firebaseConfig = {
   apiKey: "AIzaSyAUiRePiSDzXC50hUEad3eZ6NprPS364YE",
   authDomain: "krk-gaming-store.firebaseapp.com",
   projectId: "krk-gaming-store",
@@ -190,159 +142,264 @@ const firebaseConfig = {
   measurementId: "G-KZ8G7GKPJ4"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const $ = id => document.getElementById(id);
-let games = [];
-let currentUser = null;
+firebase.initializeApp(firebaseConfig);
+const auth=firebase.auth();
+const db=firebase.firestore();
+const $=id=>document.getElementById(id);
+let games=[],methods=[],orders=[],isAdmin=false;
 
-function message(id,text,success=false){
- $(id).textContent=text;
- $(id).className=success?"success":"error";
+function safe(v){
+ return String(v??"").replace(/[&<>"']/g,c=>({
+ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ })[c]);
 }
+function say(id,text){$(id).textContent=text;}
+function stamp(){return firebase.firestore.FieldValue.serverTimestamp();}
 
-function showPage(page){
- document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));
- $("page-"+page).classList.remove("hidden");
- document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
- const names={overview:"Overview",games:"Game Library",editor:"Add / Edit Game",categories:"Categories",analytics:"Statistics & Analytics",users:"User Management"};
- $("pageTitle").textContent=names[page]||"KRK Game Zone";
-}
-
-document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
-document.querySelectorAll("[data-goto]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.goto)));
-
-$("loginForm").addEventListener("submit",async e=>{
- e.preventDefault();
- message("loginMessage","Signing in...",true);
+$("loginBtn").onclick=async()=>{
  try{
-  await signInWithEmailAndPassword(auth,$("email").value.trim(),$("password").value);
- }catch(err){message("loginMessage","Login failed: "+err.message);}
-});
-
-onAuthStateChanged(auth,async user=>{
- currentUser=user;
- if(!user){
-  $("loginScreen").classList.remove("hidden");
-  $("adminApp").classList.add("hidden");
-  $("status").textContent="Signed out";
-  return;
- }
+  say("loginMsg","Signing in...");
+  await auth.signInWithEmailAndPassword($("email").value.trim(),$("password").value);
+ }catch(e){say("loginMsg",e.message);}
+};
+$("signupBtn").onclick=async()=>{
  try{
-  const result=await getIdTokenResult(user,true);
-  if(result.claims.admin!==true){
-   await signOut(auth);
-   message("loginMessage","Access denied: is account par admin:true claim nahi hai.");
-   return;
+  say("loginMsg","Creating account...");
+  await auth.createUserWithEmailAndPassword($("email").value.trim(),$("password").value);
+ }catch(e){say("loginMsg",e.message);}
+};
+$("logoutBtn").onclick=()=>auth.signOut();
+$("customerLogout").onclick=()=>auth.signOut();
+
+auth.onAuthStateChanged(async user=>{
+ $("login").classList.toggle("hidden",!!user);
+ $("customer").classList.add("hidden");
+ $("dashboard").classList.add("hidden");
+ if(!user)return;
+ try{
+  const token=await user.getIdTokenResult(true);
+  isAdmin=token.claims.admin===true;
+  if(isAdmin){
+   $("dashboard").classList.remove("hidden");
+   say("status","Signed in as admin: "+(user.email||user.uid));
+   await loadAdmin();
+  }else{
+   $("customer").classList.remove("hidden");
+   say("customerInfo","Signed in: "+(user.email||user.uid));
+   await loadCustomer();
   }
-  $("loginScreen").classList.add("hidden");
-  $("adminApp").classList.remove("hidden");
-  $("status").textContent="Firebase connected";
-  await loadGames();
- }catch(err){
-  message("loginMessage","Firebase error: "+err.message);
+ }catch(e){
+  say("loginMsg","Firebase error: "+e.message);
  }
 });
 
-$("logout").addEventListener("click",()=>signOut(auth));
-
-async function loadGames(){
+async function loadAdmin(){
  try{
-  const snap=await getDocs(collection(db,"games"));
-  games=snap.docs.map(d=>({id:d.id,...d.data()}));
-  renderGames();renderStats();
-  $("status").textContent="Connected • "+games.length+" games";
- }catch(err){
-  $("status").textContent="Firestore error";
-  message("gamesMessage",err.message);
- }
+  const [g,m,o]=await Promise.all([
+   db.collection("games").get(),
+   db.collection("paymentMethods").get(),
+   db.collection("orders").get()
+  ]);
+  games=g.docs.map(d=>({id:d.id,...d.data()}));
+  methods=m.docs.map(d=>({id:d.id,...d.data()}));
+  orders=o.docs.map(d=>({id:d.id,...d.data()}));
+  renderAdmin();
+ }catch(e){alert("Admin Firebase error: "+e.message);}
 }
 
-function renderStats(){
- const pub=games.filter(g=>g.published===true).length;
- $("total").textContent=games.length;
- $("published").textContent=pub;
- $("drafts").textContent=games.length-pub;
- $("aTotal").textContent=games.length;
- $("aPublished").textContent=pub;
- const counts={};
- games.forEach(g=>{const c=g.category||"Other";counts[c]=(counts[c]||0)+1;});
- $("aCategories").textContent=Object.keys(counts).length;
- $("categoryList").replaceChildren();
- Object.entries(counts).sort().forEach(([name,count])=>{
-  const p=document.createElement("p");
-  p.textContent=name+" — "+count+" game(s)";
-  $("categoryList").append(p);
- });
+function renderAdmin(){
+ $("gamesList").innerHTML=games.map(g=>`
+ <div class="item"><b>${safe(g.name)}</b>
+ <p>${safe(g.category||"")}</p>
+ <p>PKR ${safe(g.pricePKR||0)} | INR ${safe(g.priceINR||0)}</p>
+ <p>${g.published?"Published":"Draft"}</p>
+ <button data-edit="${safe(g.id)}">Edit</button>
+ <button class="del" data-delete="${safe(g.id)}">Delete</button></div>
+ `).join("")||'<p class="small">No products yet.</p>';
+
+ $("methodsList").innerHTML=methods.map(m=>`
+ <div class="item"><b>${safe(m.name)}</b> — ${safe(m.country)}
+ <p>${safe(m.holder||"")}</p><p>${safe(m.account||"")}</p>
+ <p>${safe(m.instructions||"")}</p><p>${m.enabled?"Enabled":"Disabled"}</p>
+ <button data-method-edit="${safe(m.id)}">Edit</button>
+ <button class="del" data-method-delete="${safe(m.id)}">Delete</button></div>
+ `).join("")||'<p class="small">No payment methods yet.</p>';
+
+ $("ordersList").innerHTML=orders.map(o=>`
+ <div class="item"><b>${safe(o.productName||"Order")}</b>
+ <p>Order ID: ${safe(o.id)}</p><p>Customer: ${safe(o.customerEmail||"")}</p>
+ <p>Payment reference: ${safe(o.paymentReference||"")}</p>
+ <p>Status: ${safe(o.status||"pending")}</p>
+ <label>Download URL</label>
+ <input data-link="${safe(o.id)}" value="${safe(o.downloadUrl||"")}" placeholder="https://...">
+ <button data-order="approve" data-id="${safe(o.id)}">Approve Payment</button>
+ <button class="del" data-order="reject" data-id="${safe(o.id)}">Reject</button>
+ <button data-order="deliver" data-id="${safe(o.id)}">Save Delivery</button></div>
+ `).join("")||'<p class="small">No orders yet.</p>';
 }
 
-function renderGames(){
- const q=$("search").value.toLowerCase();
- const tbody=$("gameRows");
- tbody.replaceChildren();
- games.filter(g=>(g.title||"").toLowerCase().includes(q)||(g.category||"").toLowerCase().includes(q)).forEach(g=>{
-  const tr=document.createElement("tr");
-  const title=document.createElement("td");title.textContent=g.title||"Untitled";
-  const cat=document.createElement("td");cat.textContent=g.category||"Other";
-  const status=document.createElement("td");status.textContent=g.published?"Published":"Draft";status.className="pill";
-  const actions=document.createElement("td");
-  const wrap=document.createElement("div");wrap.className="actions";
-  const edit=document.createElement("button");edit.className="btn secondary";edit.textContent="Edit";edit.addEventListener("click",()=>editGame(g.id));
-  const publish=document.createElement("button");publish.className="btn secondary";publish.textContent=g.published?"Unpublish":"Publish";publish.addEventListener("click",()=>togglePublish(g));
-  const del=document.createElement("button");del.className="btn danger";del.textContent="Delete";del.addEventListener("click",()=>removeGame(g));
-  wrap.append(edit,publish,del);actions.append(wrap);tr.append(title,cat,status,actions);tbody.append(tr);
- });
+function clearGame(){
+ ["gameId","gameName","category","imageUrl","downloadUrl","description"].forEach(id=>$(id).value="");
+ $("pkr").value=0;$("inr").value=0;$("published").value="false";
 }
-$("search").addEventListener("input",renderGames);
+$("clearGame").onclick=clearGame;
 
-function editGame(id){
- const g=games.find(x=>x.id===id);if(!g)return;
- $("gameId").value=g.id;$("title").value=g.title||"";
- $("category").value=g.category||"Other";$("description").value=g.description||"";
- $("imageUrl").value=g.imageUrl||"";$("downloadUrl").value=g.downloadUrl||"";
- $("isPublished").checked=g.published===true;
- $("formHeading").textContent="Edit Game";$("cancelEdit").classList.remove("hidden");
- showPage("editor");
-}
-function resetForm(){
- $("gameForm").reset();$("gameId").value="";
- $("formHeading").textContent="Add New Game";$("cancelEdit").classList.add("hidden");
-}
-$("cancelEdit").addEventListener("click",resetForm);
-
-$("gameForm").addEventListener("submit",async e=>{
- e.preventDefault();if(!currentUser)return;
- const title=$("title").value.trim(),category=$("category").value.trim();
- const downloadUrl=$("downloadUrl").value.trim();
- if(!title||!category||!downloadUrl){message("formMessage","Name, category aur download URL zaroori hain.");return;}
+$("saveGame").onclick=async()=>{
+ const name=$("gameName").value.trim();
+ if(!name)return say("gameMsg","Game name required.");
+ const id=$("gameId").value;
  const data={
-  title,category,
+  name,category:$("category").value.trim(),
+  pricePKR:Number($("pkr").value||0),priceINR:Number($("inr").value||0),
+  imageUrl:$("imageUrl").value.trim(),downloadUrl:$("downloadUrl").value.trim(),
   description:$("description").value.trim(),
-  imageUrl:$("imageUrl").value.trim(),
-  downloadUrl,
-  published:$("isPublished").checked,
-  updatedAt:serverTimestamp()
+  published:$("published").value==="true",updatedAt:stamp()
  };
  try{
-  const id=$("gameId").value;
-  if(id){await updateDoc(doc(db,"games",id),data);}
-  else{data.createdAt=serverTimestamp();await addDoc(collection(db,"games"),data);}
-  resetForm();message("formMessage","Game successfully save ho gayi.",true);
-  await loadGames();showPage("games");
- }catch(err){message("formMessage","Save failed: "+err.message);}
-});
+  if(id)await db.collection("games").doc(id).update(data);
+  else{data.createdAt=stamp();await db.collection("games").add(data);}
+  say("gameMsg","Saved successfully.");clearGame();await loadAdmin();
+ }catch(e){say("gameMsg","Save failed: "+e.message);}
+};
 
-async function togglePublish(g){
- try{
-  await updateDoc(doc(db,"games",g.id),{published:!g.published,updatedAt:serverTimestamp()});
-  await loadGames();
- }catch(err){alert("Publish update failed: "+err.message);}
+$("gamesList").onclick=async e=>{
+ const edit=e.target.closest("[data-edit]"),del=e.target.closest("[data-delete]");
+ if(edit){
+  const g=games.find(x=>x.id===edit.dataset.edit);if(!g)return;
+  $("gameId").value=g.id;$("gameName").value=g.name||"";
+  $("category").value=g.category||"";$("pkr").value=g.pricePKR||0;
+  $("inr").value=g.priceINR||0;$("imageUrl").value=g.imageUrl||"";
+  $("downloadUrl").value=g.downloadUrl||"";$("description").value=g.description||"";
+  $("published").value=String(!!g.published);
+  window.scrollTo({top:0,behavior:"smooth"});
+ }
+ if(del&&confirm("Delete this product?")){
+  try{await db.collection("games").doc(del.dataset.delete).delete();await loadAdmin();}
+  catch(err){alert(err.message);}
+ }
+};
+
+function clearMethod(){
+ ["methodId","methodName","holder","account","instructions"].forEach(id=>$(id).value="");
+ $("country").value="Pakistan";$("enabled").value="true";
 }
-async function removeGame(g){
- if(!confirm('Kya "'+(g.title||"Untitled")+'" delete karni hai? Yeh undo nahi hoga.'))return;
- try{await deleteDoc(doc(db,"games",g.id));await loadGames();}
- catch(err){alert("Delete failed: "+err.message);}
+$("clearMethod").onclick=clearMethod;
+$("saveMethod").onclick=async()=>{
+ const name=$("methodName").value.trim();
+ if(!name)return say("methodMsg","Payment method name required.");
+ const id=$("methodId").value;
+ const data={name,country:$("country").value,holder:$("holder").value.trim(),
+  account:$("account").value.trim(),instructions:$("instructions").value.trim(),
+  enabled:$("enabled").value==="true",updatedAt:stamp()};
+ try{
+  if(id)await db.collection("paymentMethods").doc(id).update(data);
+  else{data.createdAt=stamp();await db.collection("paymentMethods").add(data);}
+  say("methodMsg","Payment method saved.");clearMethod();await loadAdmin();
+ }catch(e){say("methodMsg","Save failed: "+e.message);}
+};
+
+$("methodsList").onclick=async e=>{
+ const edit=e.target.closest("[data-method-edit]"),del=e.target.closest("[data-method-delete]");
+ if(edit){
+  const m=methods.find(x=>x.id===edit.dataset.methodEdit);if(!m)return;
+  $("methodId").value=m.id;$("methodName").value=m.name||"";
+  $("country").value=m.country||"Pakistan";$("holder").value=m.holder||"";
+  $("account").value=m.account||"";$("instructions").value=m.instructions||"";
+  $("enabled").value=String(m.enabled!==false);
+  window.scrollTo({top:0,behavior:"smooth"});
+ }
+ if(del&&confirm("Delete this payment method?")){
+  try{await db.collection("paymentMethods").doc(del.dataset.methodDelete).delete();await loadAdmin();}
+  catch(err){alert(err.message);}
+ }
+};
+
+$("ordersList").onclick=async e=>{
+ const btn=e.target.closest("[data-order]");if(!btn)return;
+ const id=btn.dataset.id,action=btn.dataset.order,ref=db.collection("orders").doc(id);
+ try{
+  if(action==="approve"){
+   if(!confirm("Official account mein payment verify kar li hai?"))return;
+   await ref.update({status:"approved",reviewedBy:auth.currentUser.uid,reviewedAt:stamp()});
+  }else if(action==="reject"){
+   const reason=prompt("Rejection reason (optional):")||"";
+   await ref.update({status:"rejected",rejectionReason:reason,reviewedBy:auth.currentUser.uid,reviewedAt:stamp()});
+  }else if(action==="deliver"){
+   const input=document.querySelector(`[data-link="${CSS.escape(id)}"]`);
+   const url=input.value.trim();
+   if(!/^https:\/\//i.test(url)){alert("Enter a valid HTTPS URL.");return;}
+   const order=orders.find(x=>x.id===id);
+   if(order?.status!=="approved"){alert("Payment ko pehle approve karein.");return;}
+   if(!confirm("Deliver this order with the supplied link?"))return;
+   await ref.update({status:"delivered",downloadUrl:url,deliveredBy:auth.currentUser.uid,deliveredAt:stamp()});
+  }
+  await loadAdmin();
+ }catch(err){alert("Order update failed: "+err.message);}
+};
+
+async function loadCustomer(){
+ try{
+  const [g,m]=await Promise.all([
+   db.collection("games").where("published","==",true).get(),
+   db.collection("paymentMethods").where("enabled","==",true).get()
+  ]);
+  games=g.docs.map(d=>({id:d.id,...d.data()}));
+  methods=m.docs.map(d=>({id:d.id,...d.data()}));
+  $("storeGames").innerHTML=games.map(g=>`
+   <div class="item"><b>${safe(g.name)}</b>
+   <p>${safe(g.category||"")}</p><p>${safe(g.description||"")}</p>
+   <p>PKR ${safe(g.pricePKR||0)} | INR ${safe(g.priceINR||0)}</p></div>
+  `).join("")||'<p>No published products.</p>';
+  $("orderGame").innerHTML=games.map(g=>`<option value="${safe(g.id)}">${safe(g.name)}</option>`).join("");
+  $("storeMethods").innerHTML=methods.map(m=>`
+   <div class="item"><b>${safe(m.name)}</b> — ${safe(m.country)}
+   <p>Account holder: ${safe(m.holder||"")}</p>
+   <p>Account: ${safe(m.account||"")}</p>
+   <p>${safe(m.instructions||"")}</p></div>
+  `).join("")||'<p>No payment methods currently available.</p>';
+  $("orderMethod").innerHTML=methods.map(m=>`<option value="${safe(m.id)}">${safe(m.name)}</option>`).join("");
+  await loadMyOrders();
+ }catch(e){say("orderMsg","Customer page error: "+e.message);}
+}
+
+$("submitOrder").onclick=async()=>{
+ const user=auth.currentUser;
+ const game=games.find(g=>g.id===$("orderGame").value);
+ const method=methods.find(m=>m.id===$("orderMethod").value);
+ const paymentReference=$("paymentReference").value.trim();
+ if(!user)return say("orderMsg","Please log in first.");
+ if(!game||!method)return say("orderMsg","Published game aur payment method select karein.");
+ if(!paymentReference)return say("orderMsg","Payment reference required.");
+ try{
+  await db.collection("orders").add({
+   uid:user.uid,customerEmail:user.email||"",
+   gameId:game.id,productName:game.name,
+   paymentMethodId:method.id,paymentMethodName:method.name,
+   paymentReference,status:"pending",downloadUrl:"",
+   createdAt:stamp()
+  });
+  $("paymentReference").value="";
+  say("orderMsg","Order submitted. Admin verification ka wait karein.");
+  await loadMyOrders();
+ }catch(e){say("orderMsg","Order submit failed: "+e.message);}
+};
+
+async function loadMyOrders(){
+ const user=auth.currentUser;if(!user)return;
+ try{
+  const snap=await db.collection("orders").where("uid","==",user.uid).get();
+  const own=snap.docs.map(d=>({id:d.id,...d.data()}));
+  $("myOrders").innerHTML=own.map(o=>{
+const ready =
+  o.status === "delivered" &&
+  typeof o.downloadUrl === "string" &&
+  /^https:\/\//i.test(o.downloadUrl);
+   return `<div class="item"><b>${safe(o.productName||"Order")}</b>
+   <p>Order ID: ${safe(o.id)}</p><p>Status: ${safe(o.status||"pending")}</p>
+   ${ready?`<a href="${safe(o.downloadUrl)}" target="_blank" rel="noopener noreferrer">Download Now</a>`:'<p class="small">Payment approval aur delivery ke baad download available hoga.</p>'}
+   </div>`;
+  }).join("")||'<p>No orders yet.</p>';
+ }catch(e){$("myOrders").textContent="Orders load failed: "+e.message;}
 }
 </script>
 </body>
