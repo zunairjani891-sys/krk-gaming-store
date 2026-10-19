@@ -4,136 +4,134 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KRK ARENA Gaming Store</title>
+<title>KRK ARENA | Admin Dashboard</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#080d16;color:#eef6ff;font-family:Arial,sans-serif}
-header{background:#101a29;padding:20px;border-bottom:2px solid #00e5ff}
-h1{margin:0;color:#00e5ff}
-main{max-width:950px;margin:auto;padding:15px}
-.card{background:#101a29;border:1px solid #26394e;border-radius:12px;padding:17px;margin-bottom:16px}
-input,select,textarea{width:100%;padding:11px;margin:7px 0 13px;background:#080d16;color:white;border:1px solid #30465d;border-radius:7px}
-button{padding:10px 14px;margin:4px 2px;border:0;border-radius:7px;background:#00e5ff;color:#06111a;font-weight:bold;cursor:pointer}
-button:disabled{opacity:.6;cursor:wait}
-.del{background:#ff6174}.secondary{background:#26394e;color:white}
-.item{padding:12px;margin:10px 0;border:1px solid #30465d;border-radius:8px;overflow-wrap:anywhere}
-.small{color:#9aacc0;font-size:13px;overflow-wrap:anywhere}
-.hidden{display:none}
-a{color:#00e5ff;overflow-wrap:anywhere}
-.error{color:#ff8795}
-.success{color:#7dffbd}
+body{margin:0;background:#080a0f;color:#f5f5f5;font:15px Arial,sans-serif}
+header{padding:20px;background:#12151d;border-bottom:2px solid #d6ad55}
+h1{margin:0;color:#f0c96b}
+main{max-width:1100px;margin:auto;padding:16px}
+.card{background:#12151d;border:1px solid #393124;border-radius:12px;padding:18px;margin-bottom:16px}
+input,select,textarea{width:100%;padding:12px;margin:7px 0 14px;background:#080a0f;color:white;border:1px solid #51462e;border-radius:7px}
+button{padding:11px 15px;margin:4px 3px 4px 0;border:0;border-radius:7px;background:#e4bd61;color:#16120a;font-weight:bold;cursor:pointer}
+.secondary{background:#303744;color:white}
+.danger{background:#b93448;color:white}
+.item{padding:13px;border:1px solid #393124;border-radius:8px;margin:10px 0;overflow-wrap:anywhere}
+.small{color:#c0c0c0;font-size:13px;overflow-wrap:anywhere}
+.hidden{display:none!important}
+.status{white-space:pre-wrap;overflow-wrap:anywhere}
+a{color:#f0c96b}
+label{display:block}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}
+nav a{padding:10px;border:1px solid #51462e;border-radius:7px;text-decoration:none}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
 </style>
 </head>
 <body>
 <header>
 <h1>KRK ARENA</h1>
-<p>Premium Gaming Store</p>
+<p>Games, Apps & Digital Store — Admin</p>
 </header>
 
 <main>
-<section class="card" id="login">
-<h2>Login / Create Account</h2>
-<label>Email</label>
-<input id="email" type="email" autocomplete="email">
-<label>Password</label>
-<input id="password" type="password" autocomplete="current-password">
-<button type="button" id="loginBtn">Login</button>
-<button type="button" id="signupBtn" class="secondary">Create Account</button>
-<p id="loginMsg" class="small" aria-live="polite"></p>
+<section id="login" class="card">
+<h2>Admin Login</h2>
+<label>Email</label><input id="email" type="email" autocomplete="username">
+<label>Password</label><input id="password" type="password" autocomplete="current-password">
+<button id="loginBtn">Login</button>
+<p id="loginMsg" class="small status"></p>
 </section>
 
-<section id="customer" class="hidden">
-<div class="card">
-<h2>Customer Store</h2>
-<p id="customerInfo" class="small"></p>
-<button type="button" id="customerLogout" class="secondary">Logout</button>
-</div>
-<div class="card">
-<h2>Available Games</h2>
-<div id="storeGames"></div>
-</div>
-<div class="card">
-<h2>Available Payment Methods</h2>
-<div id="storeMethods"></div>
-</div>
-<div class="card">
-<h2>Place Order</h2>
-<label>Game / Product</label>
-<select id="orderGame"></select>
-<label>Payment Method</label>
-<select id="orderMethod"></select>
-<label>Payment Reference / Transaction ID</label>
-<input id="paymentReference" placeholder="Enter transaction reference">
-<p class="small">Payment details apne payment provider ke official app mein verify karein. Password ya PIN kabhi share na karein.</p>
-<button type="button" id="submitOrder">Submit Order</button>
-<p id="orderMsg" class="small" aria-live="polite"></p>
-</div>
-<div class="card">
-<h2>My Orders & Downloads</h2>
-<div id="myOrders"></div>
-</div>
-</section>
-
-<div id="dashboard" class="hidden">
+<div id="panel" class="hidden">
 <section class="card">
-<h2>Admin Control Panel</h2>
-<p id="status" class="small"></p>
-<button type="button" id="logoutBtn" class="secondary">Logout</button>
+<h2>Dashboard</h2>
+<p id="adminInfo" class="small"></p>
+<button id="refreshBtn">Refresh</button>
+<button id="logoutBtn" class="secondary">Logout</button>
+<p id="mainMsg" class="small status"></p>
 </section>
 
-<section class="card">
-<h2>Add / Edit Game</h2>
-<input id="gameId" type="hidden">
-<label>Game / Product Name</label><input id="gameName">
-<label>Category</label><input id="category" placeholder="Android / PC / Tool">
-<label>Price PKR</label><input id="pkr" type="number" min="0" value="0">
-<label>Price INR</label><input id="inr" type="number" min="0" value="0">
-<label>Image URL</label><input id="imageUrl" type="url" placeholder="https://...">
-<label>Download URL</label><input id="downloadUrl" type="url" placeholder="https://...">
-<label>Description</label><textarea id="description"></textarea>
-<label>Homepage Status</label>
+<nav>
+<a href="#items">Games & Apps</a>
+<a href="#payments">Payments</a>
+<a href="#orders">Orders</a>
+<a href="index.html">Open Store</a>
+</nav>
+
+<section id="items" class="card">
+<h2>Add / Edit Game, App or File</h2>
+<input id="itemId" type="hidden">
+
+<label>Item Name</label>
+<input id="name" placeholder="Game or app name">
+
+<div class="row">
+<div>
+<label>Item Type</label>
+<select id="itemType">
+<option value="game">Game</option>
+<option value="app">App / APK</option>
+<option value="file">Other Digital File</option>
+</select>
+</div>
+<div>
+<label>Category / Platform</label>
+<input id="category" placeholder="Android / PC / APK">
+</div>
+</div>
+
+<div class="row">
+<div><label>Price PKR (0 = free)</label><input id="pricePKR" type="number" min="0" value="0"></div>
+<div><label>Price INR (0 = free)</label><input id="priceINR" type="number" min="0" value="0"></div>
+</div>
+
+<label>Image URL (optional)</label>
+<input id="imageUrl" type="url" placeholder="https://...">
+
+<label>Description</label>
+<textarea id="description" rows="3"></textarea>
+
+<label>Upload downloadable file (optional)</label>
+<input id="fileUpload" type="file">
+<p id="fileInfo" class="small">Upload files you own or are authorized to distribute. Paid files must use protected storage.</p>
+
+<label>Existing Firebase Storage Path</label>
+<input id="storagePath" placeholder="Leave unchanged when editing an existing file">
+
+<label>Publication</label>
 <select id="published">
 <option value="false">Draft</option>
 <option value="true">Published</option>
 </select>
-<button type="button" id="saveGame">Save Game</button>
-<button type="button" id="clearGame" class="secondary">Clear</button>
-<p id="gameMsg" class="small" aria-live="polite"></p>
+
+<button id="saveItem">Save Item</button>
+<button id="clearItem" class="secondary">Clear</button>
+<p id="itemMsg" class="small status"></p>
+
+<h3>All Items</h3>
+<div id="itemsList"></div>
 </section>
 
-<section class="card">
-<h2>Games & Products</h2>
-<div id="gamesList"></div>
-</section>
-
-<section class="card">
+<section id="payments" class="card">
 <h2>Payment Settings</h2>
 <input id="methodId" type="hidden">
-<label>Payment Method</label><input id="methodName" placeholder="Easypaisa / JazzCash / UPI">
+<label>Payment Method</label><input id="methodName" placeholder="Easypaisa / JazzCash">
 <label>Country</label>
-<select id="country">
-<option>Pakistan</option><option>India</option><option>Other</option>
-</select>
+<select id="country"><option>Pakistan</option><option>India</option><option>Other</option></select>
 <label>Account Holder</label><input id="holder">
-<label>Account / Wallet / UPI ID</label><input id="account">
+<label>Account / Wallet ID</label><input id="account">
 <label>Customer Instructions</label><textarea id="instructions"></textarea>
 <label>Status</label>
-<select id="enabled">
-<option value="true">Enabled</option><option value="false">Disabled</option>
-</select>
-<button type="button" id="saveMethod">Save Payment Method</button>
-<button type="button" id="clearMethod" class="secondary">Clear</button>
-<p id="methodMsg" class="small" aria-live="polite"></p>
-</section>
-
-<section class="card">
-<h2>Saved Payment Methods</h2>
+<select id="enabled"><option value="true">Enabled</option><option value="false">Disabled</option></select>
+<button id="saveMethod">Save Payment Method</button>
+<button id="clearMethod" class="secondary">Clear</button>
+<p id="methodMsg" class="small status"></p>
 <div id="methodsList"></div>
 </section>
 
-<section class="card">
-<h2>Orders & Manual Delivery</h2>
-<p class="small">Payment ko official account mein verify karne ke baad hi approve karein. Delivery ke liye valid HTTPS URL zaroori hai.</p>
+<section id="orders" class="card">
+<h2>Orders & Payment Approval</h2>
+<p class="small">Payment ko apne official account mein verify karne ke baad hi approve karein.</p>
 <div id="ordersList"></div>
 </section>
 </div>
@@ -142,7 +140,11 @@ a{color:#00e5ff;overflow-wrap:anywhere}
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+
 <script>
+"use strict";
+
 const firebaseConfig = {
   apiKey: "AIzaSyAUiRePiSDzXC50hUEad3eZ6NprPS364YE",
   authDomain: "krk-gaming-store.firebaseapp.com",
@@ -156,31 +158,45 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
+const storage = firebase.storage();
 const $ = id => document.getElementById(id);
 
-let games = [], methods = [], orders = [], isAdmin = false;
+let isAdmin = false;
+let items = [], methods = [], orders = [];
+let busy = false;
 
-function safe(v) {
-  return String(v ?? "").replace(/[&<>"']/g, c => ({
-    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+function say(id, text) { $(id).textContent = text || ""; }
+
+function esc(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;",
+    '"':"&quot;", "'":"&#39;"
   })[c]);
 }
-function say(id, text) {
-  const el = $(id);
-  if (el) el.textContent = text;
-}
-function stamp() {
-  return firebase.firestore.FieldValue.serverTimestamp();
-}
-function setBusy(id, busy) {
-  $(id).disabled = busy;
-}
-function errorText(e) {
-  return e && e.message ? e.message : String(e);
+
+function err(e) {
+  return (e && e.code ? e.code + ": " : "") +
+    (e && e.message ? e.message : String(e));
 }
 
-/* FIXED LOGIN HANDLER */
-$("loginBtn").addEventListener("click", async () => {
+function timestamp() {
+  return firebase.firestore.FieldValue.serverTimestamp();
+}
+
+function requireAdmin() {
+  if (!auth.currentUser || !isAdmin) {
+    throw new Error("Admin permission required.");
+  }
+}
+
+function isFree(item) {
+  return item.free === true ||
+    (Number(item.pricePKR || 0) === 0 &&
+     Number(item.priceINR || 0) === 0);
+}
+
+$("loginBtn").onclick = async () => {
+  if (busy) return;
   const email = $("email").value.trim();
   const password = $("password").value;
 
@@ -189,55 +205,31 @@ $("loginBtn").addEventListener("click", async () => {
     return;
   }
 
-  setBusy("loginBtn", true);
-  say("loginMsg", "Signing in...");
+  busy = true;
+  $("loginBtn").disabled = true;
+  say("loginMsg", "Login ho raha hai...");
 
   try {
     await auth.signInWithEmailAndPassword(email, password);
-    say("loginMsg", "Login successful. Account load ho raha hai...");
   } catch (e) {
-    say("loginMsg", "Login failed: " + errorText(e));
+    say("loginMsg", "Login failed: " + err(e));
   } finally {
-    setBusy("loginBtn", false);
+    busy = false;
+    $("loginBtn").disabled = false;
   }
-});
+};
 
-/* FIXED SIGNUP HANDLER */
-$("signupBtn").addEventListener("click", async () => {
-  const email = $("email").value.trim();
-  const password = $("password").value;
-
-  if (!email || !password) {
-    say("loginMsg", "Email aur password enter karein.");
-    return;
-  }
-  if (password.length < 6) {
-    say("loginMsg", "Password kam az kam 6 characters ka hona chahiye.");
-    return;
-  }
-
-  setBusy("signupBtn", true);
-  say("loginMsg", "Account create ho raha hai...");
-
-  try {
-    await auth.createUserWithEmailAndPassword(email, password);
-    say("loginMsg", "Account created successfully.");
-  } catch (e) {
-    say("loginMsg", "Signup failed: " + errorText(e));
-  } finally {
-    setBusy("signupBtn", false);
-  }
-});
+$("password").onkeydown = e => {
+  if (e.key === "Enter") $("loginBtn").click();
+};
 
 $("logoutBtn").onclick = () => auth.signOut();
-$("customerLogout").onclick = () => auth.signOut();
+$("refreshBtn").onclick = () => loadAll();
 
-/* LOGIN STATE AND ADMIN CLAIM CHECK */
 auth.onAuthStateChanged(async user => {
-  $("login").classList.toggle("hidden", !!user);
-  $("customer").classList.add("hidden");
-  $("dashboard").classList.add("hidden");
   isAdmin = false;
+  $("panel").classList.add("hidden");
+  $("login").classList.toggle("hidden", !!user);
 
   if (!user) {
     $("password").value = "";
@@ -246,215 +238,243 @@ auth.onAuthStateChanged(async user => {
 
   try {
     const token = await user.getIdTokenResult(true);
-    isAdmin = token.claims.admin === true;
 
-    if (isAdmin) {
-      $("dashboard").classList.remove("hidden");
-      say("status", "Admin signed in: " + (user.email || user.uid));
-      await loadAdmin();
-    } else {
-      $("customer").classList.remove("hidden");
-      say("customerInfo", "Signed in: " + (user.email || user.uid));
-      say("loginMsg", "Customer login successful. Admin dashboard ke liye admin permission zaroori hai.");
-      await loadCustomer();
+    if (token.claims.admin !== true) {
+      await auth.signOut();
+      say("loginMsg",
+        "Admin claim missing. Account ko trusted Firebase Admin SDK se admin:true dena hoga.");
+      return;
     }
+
+    isAdmin = true;
+    $("panel").classList.remove("hidden");
+    say("adminInfo", "Admin: " + (user.email || user.uid));
+    await loadAll();
   } catch (e) {
-    say("loginMsg", "Account load error: " + errorText(e));
+    say("loginMsg", err(e));
+    if (auth.currentUser) await auth.signOut();
   }
 });
 
-/* ADMIN DATA: each collection loads independently */
-async function loadAdmin() {
-  if (!isAdmin) return;
+async function loadAll() {
+  requireAdmin();
+  say("mainMsg", "Loading...");
 
-  try {
-    const snap = await db.collection("games").get();
-    games = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    renderGames();
-  } catch (e) {
-    say("gameMsg", "Games load failed: " + errorText(e));
+  const result = await Promise.allSettled([
+    db.collection("games").get(),
+    db.collection("paymentMethods").get(),
+    db.collection("orders").get()
+  ]);
+
+  if (result[0].status === "fulfilled") {
+    items = result[0].value.docs.map(d => ({id:d.id, ...d.data()}));
+    renderItems();
+  } else {
+    say("itemMsg", "Items: " + err(result[0].reason));
   }
 
-  try {
-    const snap = await db.collection("paymentMethods").get();
-    methods = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  if (result[1].status === "fulfilled") {
+    methods = result[1].value.docs.map(d => ({id:d.id, ...d.data()}));
     renderMethods();
-  } catch (e) {
-    say("methodMsg", "Payment methods load failed: " + errorText(e));
+  } else {
+    say("methodMsg", "Payment methods: " + err(result[1].reason));
   }
 
-  try {
-    const snap = await db.collection("orders").get();
-    orders = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  if (result[2].status === "fulfilled") {
+    orders = result[2].value.docs.map(d => ({id:d.id, ...d.data()}));
     renderOrders();
-  } catch (e) {
-    $("ordersList").textContent = "Orders load failed: " + errorText(e);
+  } else {
+    $("ordersList").textContent = "Orders: " + err(result[2].reason);
   }
+
+  say("mainMsg", "Refresh complete.");
 }
 
-function renderGames() {
-  $("gamesList").innerHTML = games.map(g => `
-    <div class="item">
-      <b>${safe(g.name)}</b>
-      <p>${safe(g.category || "")}</p>
-      <p>PKR ${safe(g.pricePKR || 0)} | INR ${safe(g.priceINR || 0)}</p>
-      <p>${g.published ? "Published" : "Draft"}</p>
-      <button type="button" data-edit="${safe(g.id)}">Edit</button>
-      <button type="button" class="del" data-delete="${safe(g.id)}">Delete</button>
-    </div>
-  `).join("") || '<p class="small">No products yet.</p>';
+function renderItems() {
+  $("itemsList").innerHTML = items.map(x => `
+    <article class="item">
+      <b>${esc(x.name)}</b>
+      <p>${esc(x.itemType || "game")} · ${isFree(x) ? "FREE" : "PAID"}</p>
+      <p>PKR ${esc(x.pricePKR || 0)} / INR ${esc(x.priceINR || 0)}</p>
+      <p>${x.published === true ? "Published" : "Draft"}</p>
+      <p class="small">Storage file: ${esc(x.storagePath || "Not uploaded")}</p>
+      <button data-edit="${esc(x.id)}">Edit</button>
+      <button class="danger" data-delete="${esc(x.id)}">Delete</button>
+    </article>
+  `).join("") || "<p>No items yet.</p>";
 }
 
-function renderMethods() {
-  $("methodsList").innerHTML = methods.map(m => `
-    <div class="item">
-      <b>${safe(m.name)}</b> — ${safe(m.country)}
-      <p>${safe(m.holder || "")}</p>
-      <p>${safe(m.account || "")}</p>
-      <p>${safe(m.instructions || "")}</p>
-      <p>${m.enabled ? "Enabled" : "Disabled"}</p>
-      <button type="button" data-method-edit="${safe(m.id)}">Edit</button>
-      <button type="button" class="del" data-method-delete="${safe(m.id)}">Delete</button>
-    </div>
-  `).join("") || '<p class="small">No payment methods yet.</p>';
-}
-
-function renderOrders() {
-  $("ordersList").innerHTML = orders.map(o => `
-    <div class="item">
-      <b>${safe(o.productName || "Order")}</b>
-      <p>Order ID: ${safe(o.id)}</p>
-      <p>Customer: ${safe(o.customerEmail || "")}</p>
-      <p>Payment reference: ${safe(o.paymentReference || "")}</p>
-      <p>Status: ${safe(o.status || "pending")}</p>
-      <label>Download URL</label>
-      <input data-link="${safe(o.id)}" value="${safe(o.downloadUrl || "")}" placeholder="https://...">
-      <button type="button" data-order="approve" data-id="${safe(o.id)}">Approve Payment</button>
-      <button type="button" class="del" data-order="reject" data-id="${safe(o.id)}">Reject</button>
-      <button type="button" data-order="deliver" data-id="${safe(o.id)}">Save Delivery</button>
-    </div>
-  `).join("") || '<p class="small">No orders yet.</p>';
-}
-
-/* GAMES CRUD */
-function clearGame() {
-  ["gameId","gameName","category","imageUrl","downloadUrl","description"].forEach(id => $(id).value = "");
-  $("pkr").value = 0;
-  $("inr").value = 0;
+function clearItem() {
+  ["itemId","name","category","imageUrl","description","storagePath"]
+    .forEach(id => $(id).value = "");
+  $("itemType").value = "game";
+  $("pricePKR").value = "0";
+  $("priceINR").value = "0";
   $("published").value = "false";
+  $("fileUpload").value = "";
+  $("fileInfo").textContent = "Choose a file to upload.";
 }
-$("clearGame").onclick = clearGame;
 
-$("saveGame").onclick = async () => {
-  if (!isAdmin) return say("gameMsg", "Admin permission required.");
+$("clearItem").onclick = clearItem;
 
-  const name = $("gameName").value.trim();
-  if (!name) return say("gameMsg", "Game name required.");
-
-  const id = $("gameId").value;
-  const data = {
-    name,
-    category: $("category").value.trim(),
-    pricePKR: Number($("pkr").value || 0),
-    priceINR: Number($("inr").value || 0),
-    imageUrl: $("imageUrl").value.trim(),
-    downloadUrl: $("downloadUrl").value.trim(),
-    description: $("description").value.trim(),
-    published: $("published").value === "true",
-    updatedAt: stamp()
-  };
-
+$("saveItem").onclick = async () => {
   try {
-    if (id) {
+    requireAdmin();
+
+    const name = $("name").value.trim();
+    if (!name) throw new Error("Item name required.");
+
+    const pkr = Number($("pricePKR").value || 0);
+    const inr = Number($("priceINR").value || 0);
+
+    if (!Number.isFinite(pkr) || pkr < 0 ||
+        !Number.isFinite(inr) || inr < 0) {
+      throw new Error("Prices zero ya us se zyada honi chahiye.");
+    }
+
+    const id = $("itemId").value || db.collection("games").doc().id;
+    const free = pkr === 0 && inr === 0;
+    let storagePath = $("storagePath").value.trim();
+    const file = $("fileUpload").files[0];
+
+    if (file) {
+      if (file.size > 100 * 1024 * 1024) {
+        throw new Error("File 100 MB se bari hai. Chhoti file select karein.");
+      }
+
+      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+      storagePath = (free ? "free/" : "paid/") + id + "/" + safeName;
+
+      say("itemMsg", "File upload ho rahi hai...");
+      await storage.ref(storagePath).put(file, {
+        contentType: file.type || "application/octet-stream",
+        customMetadata: {itemId:id}
+      });
+    }
+
+    const data = {
+      name,
+      itemType: $("itemType").value,
+      category: $("category").value.trim(),
+      pricePKR: pkr,
+      priceINR: inr,
+      free,
+      imageUrl: $("imageUrl").value.trim(),
+      description: $("description").value.trim(),
+      storagePath,
+      published: $("published").value === "true",
+      updatedAt: timestamp()
+    };
+
+    if ($("itemId").value) {
       await db.collection("games").doc(id).update(data);
     } else {
-      data.createdAt = stamp();
-      await db.collection("games").add(data);
+      data.createdAt = timestamp();
+      await db.collection("games").doc(id).set(data);
     }
-    say("gameMsg", "Game saved successfully.");
-    clearGame();
-    await loadAdmin();
+
+    clearItem();
+    say("itemMsg", "Item saved successfully.");
+    await loadAll();
   } catch (e) {
-    say("gameMsg", "Save failed: " + errorText(e));
+    say("itemMsg", "Save failed: " + err(e));
   }
 };
 
-$("gamesList").onclick = async e => {
+$("itemsList").onclick = async e => {
   const edit = e.target.closest("[data-edit]");
   const del = e.target.closest("[data-delete]");
 
   if (edit) {
-    const g = games.find(x => x.id === edit.dataset.edit);
-    if (!g) return;
-    $("gameId").value = g.id;
-    $("gameName").value = g.name || "";
-    $("category").value = g.category || "";
-    $("pkr").value = g.pricePKR || 0;
-    $("inr").value = g.priceINR || 0;
-    $("imageUrl").value = g.imageUrl || "";
-    $("downloadUrl").value = g.downloadUrl || "";
-    $("description").value = g.description || "";
-    $("published").value = String(!!g.published);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    const x = items.find(i => i.id === edit.dataset.edit);
+    if (!x) return;
+
+    $("itemId").value = x.id;
+    $("name").value = x.name || "";
+    $("itemType").value = x.itemType || "game";
+    $("category").value = x.category || "";
+    $("pricePKR").value = x.pricePKR || 0;
+    $("priceINR").value = x.priceINR || 0;
+    $("imageUrl").value = x.imageUrl || "";
+    $("description").value = x.description || "";
+    $("storagePath").value = x.storagePath || "";
+    $("published").value = String(x.published === true);
+    $("items").scrollIntoView({behavior:"smooth"});
   }
 
-  if (del && confirm("Delete this product?")) {
-    if (!isAdmin) return alert("Admin permission required.");
+  if (del && confirm("Delete this item record?")) {
     try {
+      requireAdmin();
       await db.collection("games").doc(del.dataset.delete).delete();
-      await loadAdmin();
-    } catch (err) {
-      alert("Delete failed: " + errorText(err));
+      await loadAll();
+    } catch (e) {
+      say("itemMsg", "Delete failed: " + err(e));
     }
   }
 };
 
-/* PAYMENT METHODS CRUD */
+function renderMethods() {
+  $("methodsList").innerHTML = methods.map(m => `
+    <article class="item">
+      <b>${esc(m.name)}</b> — ${esc(m.country)}
+      <p>Holder: ${esc(m.holder || "")}</p>
+      <p>Account: ${esc(m.account || "")}</p>
+      <p>${esc(m.instructions || "")}</p>
+      <p>${m.enabled ? "Enabled" : "Disabled"}</p>
+      <button data-medit="${esc(m.id)}">Edit</button>
+      <button class="danger" data-mdelete="${esc(m.id)}">Delete</button>
+    </article>
+  `).join("") || "<p>No payment methods.</p>";
+}
+
 function clearMethod() {
-  ["methodId","methodName","holder","account","instructions"].forEach(id => $(id).value = "");
+  ["methodId","methodName","holder","account","instructions"]
+    .forEach(id => $(id).value = "");
   $("country").value = "Pakistan";
   $("enabled").value = "true";
 }
+
 $("clearMethod").onclick = clearMethod;
 
 $("saveMethod").onclick = async () => {
-  if (!isAdmin) return say("methodMsg", "Admin permission required.");
-
-  const name = $("methodName").value.trim();
-  if (!name) return say("methodMsg", "Payment method name required.");
-
-  const id = $("methodId").value;
-  const data = {
-    name,
-    country: $("country").value,
-    holder: $("holder").value.trim(),
-    account: $("account").value.trim(),
-    instructions: $("instructions").value.trim(),
-    enabled: $("enabled").value === "true",
-    updatedAt: stamp()
-  };
-
   try {
+    requireAdmin();
+    const name = $("methodName").value.trim();
+    if (!name) throw new Error("Payment method name required.");
+
+    const data = {
+      name,
+      country: $("country").value,
+      holder: $("holder").value.trim(),
+      account: $("account").value.trim(),
+      instructions: $("instructions").value.trim(),
+      enabled: $("enabled").value === "true",
+      updatedAt: timestamp()
+    };
+
+    const id = $("methodId").value;
+
     if (id) {
       await db.collection("paymentMethods").doc(id).update(data);
     } else {
-      data.createdAt = stamp();
+      data.createdAt = timestamp();
       await db.collection("paymentMethods").add(data);
     }
-    say("methodMsg", "Payment method saved.");
+
     clearMethod();
-    await loadAdmin();
+    say("methodMsg", "Payment method saved.");
+    await loadAll();
   } catch (e) {
-    say("methodMsg", "Save failed: " + errorText(e));
+    say("methodMsg", "Save failed: " + err(e));
   }
 };
 
 $("methodsList").onclick = async e => {
-  const edit = e.target.closest("[data-method-edit]");
-  const del = e.target.closest("[data-method-delete]");
+  const edit = e.target.closest("[data-medit]");
+  const del = e.target.closest("[data-mdelete]");
 
   if (edit) {
-    const m = methods.find(x => x.id === edit.dataset.methodEdit);
+    const m = methods.find(x => x.id === edit.dataset.medit);
     if (!m) return;
     $("methodId").value = m.id;
     $("methodName").value = m.name || "";
@@ -462,188 +482,71 @@ $("methodsList").onclick = async e => {
     $("holder").value = m.holder || "";
     $("account").value = m.account || "";
     $("instructions").value = m.instructions || "";
-    $("enabled").value = String(m.enabled !== false);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    $("enabled").value = String(m.enabled === true);
   }
 
   if (del && confirm("Delete this payment method?")) {
-    if (!isAdmin) return alert("Admin permission required.");
     try {
-      await db.collection("paymentMethods").doc(del.dataset.methodDelete).delete();
-      await loadAdmin();
-    } catch (err) {
-      alert("Delete failed: " + errorText(err));
+      requireAdmin();
+      await db.collection("paymentMethods").doc(del.dataset.mdelete).delete();
+      await loadAll();
+    } catch (e) {
+      say("methodMsg", err(e));
     }
   }
 };
 
-/* ORDER REVIEW AND DELIVERY */
-$("ordersList").onclick = async e => {
-  const btn = e.target.closest("[data-order]");
-  if (!btn) return;
-  if (!isAdmin) return alert("Admin permission required.");
-
-  const id = btn.dataset.id;
-  const action = btn.dataset.order;
-  const ref = db.collection("orders").doc(id);
-
-  try {
-    if (action === "approve") {
-      if (!confirm("Official account mein payment verify kar li hai?")) return;
-      await ref.update({
-        status: "approved",
-        reviewedBy: auth.currentUser.uid,
-        reviewedAt: stamp()
-      });
-    } else if (action === "reject") {
-      const reason = prompt("Rejection reason (optional):") || "";
-      await ref.update({
-        status: "rejected",
-        rejectionReason: reason,
-        reviewedBy: auth.currentUser.uid,
-        reviewedAt: stamp()
-      });
-    } else if (action === "deliver") {
-      const input = document.querySelector('[data-link="' + CSS.escape(id) + '"]');
-      const url = input ? input.value.trim() : "";
-      if (!/^https:\/\//i.test(url)) {
-        alert("Enter a valid HTTPS URL.");
-        return;
-      }
-
-      const order = orders.find(x => x.id === id);
-      if (order?.status !== "approved") {
-        alert("Payment ko pehle approve karein.");
-        return;
-      }
-
-      if (!confirm("Deliver this order with the supplied link?")) return;
-      await ref.update({
-        status: "delivered",
-        downloadUrl: url,
-        deliveredBy: auth.currentUser.uid,
-        deliveredAt: stamp()
-      });
-    }
-    await loadAdmin();
-  } catch (err) {
-    alert("Order update failed: " + errorText(err));
-  }
-};
-
-/* CUSTOMER STORE */
-async function loadCustomer() {
-  try {
-    const g = await db.collection("games")
-      .where("published", "==", true).get();
-
-    games = g.docs.map(d => ({ id: d.id, ...d.data() }));
-
-    $("storeGames").innerHTML = games.map(game => `
-      <div class="item">
-        <b>${safe(game.name)}</b>
-        <p>${safe(game.category || "")}</p>
-        <p>${safe(game.description || "")}</p>
-        <p>PKR ${safe(game.pricePKR || 0)} | INR ${safe(game.priceINR || 0)}</p>
-      </div>
-    `).join("") || "<p>No published products.</p>";
-
-    $("orderGame").innerHTML = games.map(game =>
-      `<option value="${safe(game.id)}">${safe(game.name)}</option>`
-    ).join("");
-  } catch (e) {
-    $("storeGames").textContent = "Games load failed: " + errorText(e);
-  }
-
-  try {
-    const m = await db.collection("paymentMethods")
-      .where("enabled", "==", true).get();
-
-    methods = m.docs.map(d => ({ id: d.id, ...d.data() }));
-
-    $("storeMethods").innerHTML = methods.map(method => `
-      <div class="item">
-        <b>${safe(method.name)}</b> — ${safe(method.country)}
-        <p>Account holder: ${safe(method.holder || "")}</p>
-        <p>Account: ${safe(method.account || "")}</p>
-        <p>${safe(method.instructions || "")}</p>
-      </div>
-    `).join("") || "<p>No payment methods currently available.</p>";
-
-    $("orderMethod").innerHTML = methods.map(method =>
-      `<option value="${safe(method.id)}">${safe(method.name)}</option>`
-    ).join("");
-  } catch (e) {
-    $("storeMethods").textContent = "Payment methods load failed: " + errorText(e);
-  }
-
-  await loadMyOrders();
+function renderOrders() {
+  $("ordersList").innerHTML = orders.map(o => `
+    <article class="item">
+      <b>${esc(o.productName || "Order")}</b>
+      <p>Order ID: ${esc(o.id)}</p>
+      <p>Customer: ${esc(o.customerEmail || o.uid || "")}</p>
+      <p>Item ID: ${esc(o.itemId || "")}</p>
+      <p>Payment method: ${esc(o.paymentMethodName || "")}</p>
+      <p>Reference: ${esc(o.paymentReference || "")}</p>
+      <p>Status: <b>${esc(o.status || "pending")}</b></p>
+      <label>Rejection reason</label>
+      <input data-reason="${esc(o.id)}" value="${esc(o.rejectionReason || "")}">
+      <button data-action="approve" data-order="${esc(o.id)}">Verify & Approve</button>
+      <button class="danger" data-action="reject" data-order="${esc(o.id)}">Reject</button>
+    </article>
+  `).join("") || "<p>No orders.</p>";
 }
 
-$("submitOrder").onclick = async () => {
-  const user = auth.currentUser;
-  const game = games.find(g => g.id === $("orderGame").value);
-  const method = methods.find(m => m.id === $("orderMethod").value);
-  const paymentReference = $("paymentReference").value.trim();
+$("ordersList").onclick = async e => {
+  const b = e.target.closest("[data-action]");
+  if (!b) return;
 
-  if (!user) return say("orderMsg", "Please log in first.");
-  if (!game || !method) return say("orderMsg", "Game aur payment method select karein.");
-  if (!paymentReference) return say("orderMsg", "Payment reference required.");
-
-  setBusy("submitOrder", true);
   try {
-    await db.collection("orders").add({
-      uid: user.uid,
-      customerEmail: user.email || "",
-      gameId: game.id,
-      productName: game.name,
-      paymentMethodId: method.id,
-      paymentMethodName: method.name,
-      paymentReference,
-      status: "pending",
-      downloadUrl: "",
-      createdAt: stamp()
+    requireAdmin();
+    const order = orders.find(o => o.id === b.dataset.order);
+    if (!order) throw new Error("Order not found.");
+
+    const action = b.dataset.action;
+
+    if (action === "approve" &&
+        !confirm("Kya official account mein payment verify kar li hai?")) {
+      return;
+    }
+
+    const reason = document.querySelector(
+      `[data-reason="${CSS.escape(order.id)}"]`
+    )?.value.trim() || "";
+
+    await db.collection("orders").doc(order.id).update({
+      status: action === "approve" ? "approved" : "rejected",
+      rejectionReason: action === "reject" ? reason : "",
+      reviewedBy: auth.currentUser.uid,
+      reviewedAt: timestamp()
     });
 
-    $("paymentReference").value = "";
-    say("orderMsg", "Order submitted. Admin verification ka wait karein.");
-    await loadMyOrders();
+    say("mainMsg", "Order updated.");
+    await loadAll();
   } catch (e) {
-    say("orderMsg", "Order submit failed: " + errorText(e));
-  } finally {
-    setBusy("submitOrder", false);
+    say("mainMsg", "Order update failed: " + err(e));
   }
 };
-
-async function loadMyOrders() {
-  const user = auth.currentUser;
-  if (!user) return;
-
-  try {
-    const snap = await db.collection("orders")
-      .where("uid", "==", user.uid).get();
-
-    const own = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-
-    $("myOrders").innerHTML = own.map(o => {
-      const ready = o.status === "delivered" &&
-        typeof o.downloadUrl === "string" &&
-        /^https:\/\//i.test(o.downloadUrl);
-
-      return `
-        <div class="item">
-          <b>${safe(o.productName || "Order")}</b>
-          <p>Order ID: ${safe(o.id)}</p>
-          <p>Status: ${safe(o.status || "pending")}</p>
-          ${ready
-            ? `<a href="${safe(o.downloadUrl)}" target="_blank" rel="noopener noreferrer">Download Now</a>`
-            : '<p class="small">Payment approval aur delivery ke baad download available hoga.</p>'}
-        </div>`;
-    }).join("") || "<p>No orders yet.</p>";
-  } catch (e) {
-    $("myOrders").textContent = "Orders load failed: " + errorText(e);
-  }
-}
 </script>
 </body>
 </html>
