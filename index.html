@@ -2,269 +2,347 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KRK Gaming Store | Admin</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0; background: #090909; color: #f5f5f5;
-      font-family: Arial, sans-serif;
-    }
-    header {
-      padding: 20px; background: #151515;
-      border-bottom: 1px solid #d4a72c;
-      display: flex; justify-content: space-between; gap: 12px;
-      align-items: center; flex-wrap: wrap;
-    }
-    h1, h2 { margin-top: 0; }
-    h1 { color: #f5c542; font-size: 22px; }
-    main { max-width: 1100px; margin: auto; padding: 20px; }
-    .panel, .stat {
-      background: #151515; border: 1px solid #343434;
-      border-radius: 12px; padding: 18px; margin-bottom: 18px;
-    }
-    .stats {
-      display: grid; grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
-      gap: 12px;
-    }
-    .stat strong { color: #f5c542; font-size: 28px; display: block; }
-    input, textarea {
-      display: block; width: 100%; margin: 10px 0; padding: 12px;
-      border-radius: 8px; border: 1px solid #444;
-      background: #0c0c0c; color: white;
-    }
-    button {
-      padding: 11px 15px; border: 0; border-radius: 8px;
-      background: #f5c542; color: #111; font-weight: bold;
-      cursor: pointer; margin: 4px;
-    }
-    .secondary { background: #333; color: white; }
-    .danger { background: #9d2929; color: white; }
-    .game {
-      border-top: 1px solid #333; padding: 14px 0;
-      overflow-wrap: anywhere;
-    }
-    .muted { color: #aaa; }
-    #app { display: none; }
-    #status { white-space: pre-wrap; color: #f5c542; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b0b0d">
+<title>KRK Game Zone | Admin Dashboard</title>
+<style>
+:root{--bg:#0b0b0d;--panel:#151517;--gold:#e8bd59;--muted:#a5a5ad;--line:#332b1c;--red:#ff6969}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#fff;font:15px Arial,sans-serif}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+.gold{color:var(--gold)}
+.muted{color:var(--muted)}
+input,textarea{width:100%;padding:12px;margin:7px 0 15px;background:#0b0b0d;color:white;border:1px solid #413722;border-radius:8px}
+textarea{min-height:90px;resize:vertical}
+label{font-size:14px;color:#ddd}
+.btn{padding:11px 15px;border:0;border-radius:8px;background:var(--gold);color:#17120a;font-weight:bold}
+.secondary{background:#29292c;color:white;border:1px solid #444}
+.danger{background:#512126;color:white}
+.full{width:100%}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:19px;margin-bottom:18px}
+#loginScreen{min-height:100vh;display:grid;place-items:center;padding:20px}
+.login{width:100%;max-width:400px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:26px}
+.error{color:#ff8c8c;white-space:pre-wrap}
+.success{color:#9be3ad}
+.layout{min-height:100vh;display:grid;grid-template-columns:240px minmax(0,1fr)}
+aside{padding:20px 14px;background:#101012;border-right:1px solid var(--line)}
+.brand{padding:8px 10px 24px;color:var(--gold);font-weight:900;line-height:1.7}
+.nav{display:block;width:100%;text-align:left;padding:13px;margin:4px 0;border:0;border-radius:8px;background:transparent;color:#ddd}
+.nav.active,.nav:hover{background:#302719;color:var(--gold)}
+main{padding:25px;min-width:0}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:24px}
+h1{font-size:25px;margin:0}h2{font-size:19px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
+.stat strong{display:block;font-size:29px;margin-top:12px;color:var(--gold)}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+.wide{grid-column:1/-1}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:540px}
+th,td{text-align:left;padding:12px 9px;border-bottom:1px solid #332b1c}
+th{color:var(--gold)}
+.actions{display:flex;gap:6px;flex-wrap:wrap}
+.pill{color:var(--gold);font-size:12px}
+@media(max-width:760px){
+.layout{grid-template-columns:1fr}
+aside{border-right:0;border-bottom:1px solid var(--line);padding:12px}
+.brand{padding:5px 8px 10px}
+.navlist{display:flex;overflow-x:auto;gap:5px}
+.nav{width:auto;white-space:nowrap}
+main{padding:14px}
+.stats{grid-template-columns:1fr}
+.formgrid{grid-template-columns:1fr}
+.wide{grid-column:auto}
+}
+</style>
 </head>
 <body>
-  <header>
-    <h1>KRK GAMING STORE — ADMIN</h1>
-    <button id="logout" class="secondary" hidden>Logout</button>
-  </header>
 
-  <main>
-    <section id="login" class="panel">
-      <h2>Admin Login</h2>
-      <p class="muted">Sirf authorized admin account use karein.</p>
-      <form id="loginForm">
-        <input id="email" type="email" placeholder="Admin email" required>
-        <input id="password" type="password" placeholder="Password" required>
-        <button type="submit">Login</button>
-      </form>
-    </section>
+<section id="loginScreen">
+<form id="loginForm" class="login">
+<h1 class="gold">🎮 KRK GAME ZONE</h1>
+<p class="muted">Secure Admin Login</p>
+<label for="email">Admin Email</label>
+<input id="email" type="email" autocomplete="username" required>
+<label for="password">Password</label>
+<input id="password" type="password" autocomplete="current-password" required>
+<button class="btn full" type="submit">Login to Dashboard</button>
+<p id="loginMessage" class="error" role="status"></p>
+</form>
+</section>
 
-    <section id="app">
-      <div class="stats">
-        <div class="stat">Total Games<strong id="total">0</strong></div>
-        <div class="stat">Published<strong id="published">0</strong></div>
-        <div class="stat">Unpublished<strong id="unpublished">0</strong></div>
-      </div>
+<div id="adminApp" class="layout hidden">
+<aside>
+<div class="brand">🎮 KRK<br>GAME ZONE</div>
+<nav class="navlist">
+<button class="nav active" data-page="overview">▦ Overview</button>
+<button class="nav" data-page="games">🎮 Game Library</button>
+<button class="nav" data-page="editor">＋ Add New Game</button>
+<button class="nav" data-page="categories">◇ Categories</button>
+<button class="nav" data-page="analytics">▥ Statistics</button>
+<button class="nav" data-page="users">♙ User Management</button>
+</nav>
+<button id="logout" class="btn secondary full" style="margin-top:18px">Logout</button>
+</aside>
 
-      <section class="panel">
-        <h2 id="formTitle">Add New Game</h2>
-        <form id="gameForm">
-          <input id="gameTitle" placeholder="Game title" required>
-          <textarea id="description" placeholder="Game description" required></textarea>
-          <input id="imageUrl" type="url" placeholder="Game image URL (https://...)">
-          <input id="downloadUrl" type="url" placeholder="Official download URL (https://...)" required>
-          <label><input id="isPublished" type="checkbox" checked style="display:inline;width:auto"> Published on Store</label>
-          <button type="submit">Save Game</button>
-          <button type="button" id="cancelEdit" class="secondary" hidden>Cancel Edit</button>
-        </form>
-      </section>
+<main>
+<header class="topbar">
+<div><h1 id="pageTitle">Overview</h1><p class="muted">Black & Gold Premium Admin Panel</p></div>
+<span id="status" class="pill">Connecting...</span>
+</header>
 
-      <section class="panel">
-        <h2>Games Management</h2>
-        <div id="gamesList">Loading games...</div>
-      </section>
-    </section>
-    <p id="status" role="status"></p>
-  </main>
+<section id="page-overview" class="page">
+<div class="stats">
+<div class="stat">Total Games<strong id="total">0</strong></div>
+<div class="stat">Published<strong id="published">0</strong></div>
+<div class="stat">Drafts<strong id="drafts">0</strong></div>
+</div>
+<div class="card">
+<h2>Welcome to <span class="gold">KRK Game Zone</span></h2>
+<p class="muted">Games manage karo aur published games ko apne public store ke saath connect karo.</p>
+<button class="btn" data-goto="editor">＋ Add New Game</button>
+</div>
+</section>
 
-  <script type="module">
-    import { initializeApp } from
-      "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-    import {
-      getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut
-    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-    import {
-      getFirestore, collection, getDocs, addDoc, doc, updateDoc,
-      deleteDoc, serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+<section id="page-games" class="page hidden">
+<div class="card">
+<h2>Game Library</h2>
+<input id="search" placeholder="Search games or categories...">
+<div class="tablewrap"><table>
+<thead><tr><th>Game</th><th>Category</th><th>Status</th><th>Actions</th></tr></thead>
+<tbody id="gameRows"></tbody>
+</table></div>
+<p id="gamesMessage" class="muted"></p>
+</div>
+</section>
 
-    // Apne KRK Gaming Store project ka existing config yahan rakhein.
-    const firebaseConfig = {
-      const firebaseConfig = {
+<section id="page-editor" class="page hidden">
+<form id="gameForm" class="card">
+<h2 id="formHeading">Add New Game</h2>
+<input type="hidden" id="gameId">
+<div class="formgrid">
+<div><label for="title">Game Name *</label><input id="title" maxlength="100" required></div>
+<div><label for="category">Category *</label><input id="category" list="categoryOptions" required>
+<datalist id="categoryOptions">
+<option value="Action"><option value="Racing"><option value="Adventure">
+<option value="Sports"><option value="Simulation"><option value="Strategy"><option value="Other">
+</datalist></div>
+<div class="wide"><label for="description">Description</label><textarea id="description" maxlength="2000"></textarea></div>
+<div class="wide"><label for="imageUrl">Game Image URL (optional)</label><input id="imageUrl" type="url" placeholder="https://example.com/image.jpg"></div>
+<div class="wide"><label for="downloadUrl">Download URL *</label><input id="downloadUrl" type="url" required placeholder="https://example.com/game.apk"></div>
+</div>
+<label><input id="isPublished" type="checkbox" style="width:auto;margin-right:7px">Publish on public store</label>
+<p><button class="btn" type="submit">Save Game</button>
+<button class="btn secondary hidden" id="cancelEdit" type="button">Cancel Edit</button></p>
+<p id="formMessage" role="status"></p>
+</form>
+</section>
+
+<section id="page-categories" class="page hidden">
+<div class="card"><h2>Game Categories</h2><div id="categoryList"></div></div>
+</section>
+
+<section id="page-analytics" class="page hidden">
+<div class="card">
+<h2>Statistics & Analytics</h2>
+<p>Total games: <strong id="aTotal">0</strong></p>
+<p>Published games: <strong id="aPublished">0</strong></p>
+<p>Categories: <strong id="aCategories">0</strong></p>
+<hr style="border-color:#332b1c">
+<p class="muted">Yeh game catalog ki statistics hain. Real download-click reports ke liye Google Analytics ya secure event backend connect karna hoga.</p>
+</div>
+</section>
+
+<section id="page-users" class="page hidden">
+<div class="card">
+<h2>User Management</h2>
+<p class="muted">Firebase Authentication users ki list aur account actions ke liye protected backend/Admin SDK zaroori hai. Browser dashboard se users ko delete ya admin promote nahi kiya jayega.</p>
+</div>
+</section>
+</main>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import {
+ getAuth, signInWithEmailAndPassword, onAuthStateChanged,
+ signOut, getIdTokenResult
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+import {
+ getFirestore, collection, getDocs, addDoc,
+ doc, updateDoc, deleteDoc, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+/* PASTE YOUR FIREBASE CONFIG HERE.
+   Replace this entire object with the config from Firebase Console.
+   Keep exactly ONE const firebaseConfig declaration. */
+const firebaseConfig = {
   apiKey: "AIzaSyAUiRePiSDzXC50hUEad3eZ6NprPS364YE",
   authDomain: "krk-gaming-store.firebaseapp.com",
   projectId: "krk-gaming-store",
-      storageBucket: "krk-gaming-store.firebasestorage.app",
-      messagingSenderId: "906609596294",
-      appId: "1:906609596294:web:51f5dab4aaeb33ea7fbe07",
-      measurementId: "G-KZ8G7GKPJ4"
-    };
+  storageBucket: "krk-gaming-store.firebasestorage.app",
+  messagingSenderId: "906609596294",
+  appId: "1:906609596294:web:51f5dab4aaeb33ea7fbe07",
+  measurementId: "G-KZ8G7GKPJ4"
+};
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const $ = id => document.getElementById(id);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const $ = id => document.getElementById(id);
+let games = [];
+let currentUser = null;
 
-    let editingId = null;
-    let gamesCache = [];
+function message(id,text,success=false){
+ $(id).textContent=text;
+ $(id).className=success?"success":"error";
+}
 
-    function status(message) { $("status").textContent = message; }
+function showPage(page){
+ document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));
+ $("page-"+page).classList.remove("hidden");
+ document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
+ const names={overview:"Overview",games:"Game Library",editor:"Add / Edit Game",categories:"Categories",analytics:"Statistics & Analytics",users:"User Management"};
+ $("pageTitle").textContent=names[page]||"KRK Game Zone";
+}
 
-    $("loginForm").addEventListener("submit", async event => {
-      event.preventDefault();
-      try {
-        await signInWithEmailAndPassword(
-          auth, $("email").value.trim(), $("password").value
-        );
-      } catch (error) {
-        status("Login nahi hua: " + error.message);
-      }
-    });
+document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
+document.querySelectorAll("[data-goto]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.goto)));
 
-    onAuthStateChanged(auth, async user => {
-      $("login").style.display = user ? "none" : "block";
-      $("logout").hidden = !user;
-      $("app").style.display = "none";
-      if (!user) return;
+$("loginForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ message("loginMessage","Signing in...",true);
+ try{
+  await signInWithEmailAndPassword(auth,$("email").value.trim(),$("password").value);
+ }catch(err){message("loginMessage","Login failed: "+err.message);}
+});
 
-      try {
-        const token = await user.getIdTokenResult(true);
-        if (token.claims.admin !== true) {
-          status("Access denied: is account par admin permission nahi hai.");
-          await signOut(auth);
-          return;
-        }
-        $("app").style.display = "block";
-        status("Admin login successful.");
-        await loadGames();
-      } catch (error) {
-        status("Dashboard load nahi hua: " + error.message);
-      }
-    });
+onAuthStateChanged(auth,async user=>{
+ currentUser=user;
+ if(!user){
+  $("loginScreen").classList.remove("hidden");
+  $("adminApp").classList.add("hidden");
+  $("status").textContent="Signed out";
+  return;
+ }
+ try{
+  const result=await getIdTokenResult(user,true);
+  if(result.claims.admin!==true){
+   await signOut(auth);
+   message("loginMessage","Access denied: is account par admin:true claim nahi hai.");
+   return;
+  }
+  $("loginScreen").classList.add("hidden");
+  $("adminApp").classList.remove("hidden");
+  $("status").textContent="Firebase connected";
+  await loadGames();
+ }catch(err){
+  message("loginMessage","Firebase error: "+err.message);
+ }
+});
 
-    $("logout").addEventListener("click", () => signOut(auth));
+$("logout").addEventListener("click",()=>signOut(auth));
 
-    async function loadGames() {
-      const snapshot = await getDocs(collection(db, "games"));
-      gamesCache = snapshot.docs.map(item => ({
-        id: item.id, ...item.data()
-      }));
-      $("total").textContent = gamesCache.length;
-      $("published").textContent =
-        gamesCache.filter(game => game.published === true).length;
-      $("unpublished").textContent =
-        gamesCache.filter(game => game.published !== true).length;
+async function loadGames(){
+ try{
+  const snap=await getDocs(collection(db,"games"));
+  games=snap.docs.map(d=>({id:d.id,...d.data()}));
+  renderGames();renderStats();
+  $("status").textContent="Connected • "+games.length+" games";
+ }catch(err){
+  $("status").textContent="Firestore error";
+  message("gamesMessage",err.message);
+ }
+}
 
-      const list = $("gamesList");
-      list.replaceChildren();
+function renderStats(){
+ const pub=games.filter(g=>g.published===true).length;
+ $("total").textContent=games.length;
+ $("published").textContent=pub;
+ $("drafts").textContent=games.length-pub;
+ $("aTotal").textContent=games.length;
+ $("aPublished").textContent=pub;
+ const counts={};
+ games.forEach(g=>{const c=g.category||"Other";counts[c]=(counts[c]||0)+1;});
+ $("aCategories").textContent=Object.keys(counts).length;
+ $("categoryList").replaceChildren();
+ Object.entries(counts).sort().forEach(([name,count])=>{
+  const p=document.createElement("p");
+  p.textContent=name+" — "+count+" game(s)";
+  $("categoryList").append(p);
+ });
+}
 
-      if (!gamesCache.length) {
-        list.textContent = "Abhi koi game nahi hai.";
-        return;
-      }
+function renderGames(){
+ const q=$("search").value.toLowerCase();
+ const tbody=$("gameRows");
+ tbody.replaceChildren();
+ games.filter(g=>(g.title||"").toLowerCase().includes(q)||(g.category||"").toLowerCase().includes(q)).forEach(g=>{
+  const tr=document.createElement("tr");
+  const title=document.createElement("td");title.textContent=g.title||"Untitled";
+  const cat=document.createElement("td");cat.textContent=g.category||"Other";
+  const status=document.createElement("td");status.textContent=g.published?"Published":"Draft";status.className="pill";
+  const actions=document.createElement("td");
+  const wrap=document.createElement("div");wrap.className="actions";
+  const edit=document.createElement("button");edit.className="btn secondary";edit.textContent="Edit";edit.addEventListener("click",()=>editGame(g.id));
+  const publish=document.createElement("button");publish.className="btn secondary";publish.textContent=g.published?"Unpublish":"Publish";publish.addEventListener("click",()=>togglePublish(g));
+  const del=document.createElement("button");del.className="btn danger";del.textContent="Delete";del.addEventListener("click",()=>removeGame(g));
+  wrap.append(edit,publish,del);actions.append(wrap);tr.append(title,cat,status,actions);tbody.append(tr);
+ });
+}
+$("search").addEventListener("input",renderGames);
 
-      gamesCache.forEach(game => {
-        const row = document.createElement("div");
-        row.className = "game";
-        const title = document.createElement("h3");
-        title.textContent = game.title || "Untitled game";
-        const desc = document.createElement("p");
-        desc.textContent = game.description || "";
-        const state = document.createElement("p");
-        state.className = "muted";
-        state.textContent = game.published ? "Published" : "Unpublished";
-        const edit = document.createElement("button");
-        edit.textContent = "Edit";
-        edit.addEventListener("click", () => editGame(game.id));
-        const remove = document.createElement("button");
-        remove.textContent = "Delete";
-        remove.className = "danger";
-        remove.addEventListener("click", () => removeGame(game.id));
-        row.append(title, desc, state, edit, remove);
-        list.append(row);
-      });
-    }
+function editGame(id){
+ const g=games.find(x=>x.id===id);if(!g)return;
+ $("gameId").value=g.id;$("title").value=g.title||"";
+ $("category").value=g.category||"Other";$("description").value=g.description||"";
+ $("imageUrl").value=g.imageUrl||"";$("downloadUrl").value=g.downloadUrl||"";
+ $("isPublished").checked=g.published===true;
+ $("formHeading").textContent="Edit Game";$("cancelEdit").classList.remove("hidden");
+ showPage("editor");
+}
+function resetForm(){
+ $("gameForm").reset();$("gameId").value="";
+ $("formHeading").textContent="Add New Game";$("cancelEdit").classList.add("hidden");
+}
+$("cancelEdit").addEventListener("click",resetForm);
 
-    $("gameForm").addEventListener("submit", async event => {
-      event.preventDefault();
-      const user = auth.currentUser;
-      if (!user) return status("Pehle login karein.");
+$("gameForm").addEventListener("submit",async e=>{
+ e.preventDefault();if(!currentUser)return;
+ const title=$("title").value.trim(),category=$("category").value.trim();
+ const downloadUrl=$("downloadUrl").value.trim();
+ if(!title||!category||!downloadUrl){message("formMessage","Name, category aur download URL zaroori hain.");return;}
+ const data={
+  title,category,
+  description:$("description").value.trim(),
+  imageUrl:$("imageUrl").value.trim(),
+  downloadUrl,
+  published:$("isPublished").checked,
+  updatedAt:serverTimestamp()
+ };
+ try{
+  const id=$("gameId").value;
+  if(id){await updateDoc(doc(db,"games",id),data);}
+  else{data.createdAt=serverTimestamp();await addDoc(collection(db,"games"),data);}
+  resetForm();message("formMessage","Game successfully save ho gayi.",true);
+  await loadGames();showPage("games");
+ }catch(err){message("formMessage","Save failed: "+err.message);}
+});
 
-      const game = {
-        title: $("gameTitle").value.trim(),
-        description: $("description").value.trim(),
-        imageUrl: $("imageUrl").value.trim(),
-        downloadUrl: $("downloadUrl").value.trim(),
-        published: $("isPublished").checked,
-        updatedAt: serverTimestamp()
-      };
-
-      try {
-        if (editingId) {
-          await updateDoc(doc(db, "games", editingId), game);
-          status("Game update ho gayi.");
-        } else {
-          game.createdAt = serverTimestamp();
-          await addDoc(collection(db, "games"), game);
-          status("Game add ho gayi.");
-        }
-        resetForm();
-        await loadGames();
-      } catch (error) {
-        status("Save nahi hua: " + error.message);
-      }
-    });
-
-    function editGame(id) {
-      const game = gamesCache.find(item => item.id === id);
-      if (!game) return;
-      editingId = id;
-      $("gameTitle").value = game.title || "";
-      $("description").value = game.description || "";
-      $("imageUrl").value = game.imageUrl || "";
-      $("downloadUrl").value = game.downloadUrl || "";
-      $("isPublished").checked = game.published === true;
-      $("formTitle").textContent = "Edit Game";
-      $("cancelEdit").hidden = false;
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    function resetForm() {
-      editingId = null;
-      $("gameForm").reset();
-      $("formTitle").textContent = "Add New Game";
-      $("cancelEdit").hidden = true;
-    }
-    $("cancelEdit").addEventListener("click", resetForm);
-
-    async function removeGame(id) {
-      if (!confirm("Kya aap waqai is game ko delete karna chahte hain?")) return;
-      try {
-        await deleteDoc(doc(db, "games", id));
-        status("Game delete ho gayi.");
-        await loadGames();
-      } catch (error) {
-        status("Delete nahi hua: " + error.message);
-      }
-    }
-  </script>
+async function togglePublish(g){
+ try{
+  await updateDoc(doc(db,"games",g.id),{published:!g.published,updatedAt:serverTimestamp()});
+  await loadGames();
+ }catch(err){alert("Publish update failed: "+err.message);}
+}
+async function removeGame(g){
+ if(!confirm('Kya "'+(g.title||"Untitled")+'" delete karni hai? Yeh undo nahi hoga.'))return;
+ try{await deleteDoc(doc(db,"games",g.id));await loadGames();}
+ catch(err){alert("Delete failed: "+err.message);}
+}
+</script>
 </body>
 </html>
